@@ -2,7 +2,35 @@
 /// <reference path="../dependencies/chroma.min.js"/>
 /// <reference path="../dependencies/pixi-filters.js"/>
 
-class CLAnimations {
+import { AmbientLightData, LightData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs";
+import { CLAnimationHelpers } from "./animationhelpers";
+import { CLPreAnimation } from "./preanimations";
+
+/**
+ *
+ * light: {
+        dim: manageDist(dimLight, isPreset),
+        bright: manageDist(brightLight, isPreset),
+        color: lightColor,
+        //@ts-ignore
+        animation: {
+          type: lightAnimationType,
+          speed: lightAnimationSpeed,
+          intensity: lightAnimationIntensity,
+          reverse: lightAnimationReverse,
+        },
+        alpha: lightAlpha,
+        angle: lightAngle,
+        coloration: lightColoration,
+        luminosity: lightLuminosity,
+        gradual: lightGradual,
+        saturation: lightSaturation,
+        contrast: lightContrast,
+        shadows: lightShadows,
+  },
+ *
+ */
+export class CLAnimations extends LightData {
 
     constructor() {
         Hooks.on("initializePointSourceShaders", CLPreAnimation.onPointSourceInit);
@@ -55,7 +83,7 @@ class CLAnimations {
         speed = 5,
         intensity = 5
     }) {
-        var flipped = this._flipped;
+        let flipped = this._flipped;
         // Use binaryRandomInterval to flip on at random
         // light, speed, delay before attempting to flip, frame-range light can remain flipped 'on'
         CLAnimationHelpers.binaryFlashRandomInterval(this, speed, dt, 50, [1, 10]);
@@ -74,7 +102,7 @@ class CLAnimations {
             if(flipped != this._flipped){
                 // Experimental: Force light visible
                 this._source.layer.sources.set(this._source.sourceId, this);
-                canvas.sight.refresh();
+                canvas.sight?.refresh();
             }
         } else {
             // Set the alpha to zero
@@ -83,7 +111,7 @@ class CLAnimations {
             if(flipped != this._flipped || this._source.layer.sources.get(this._source.sourceId)){
                 // Experimental: Force light fully hidden without stopping animation
                 this._source.layer.sources.delete(this._source.sourceId)
-                canvas.sight.refresh();
+                canvas.sight?.refresh();
             }
         }
     }
@@ -124,7 +152,7 @@ class CLAnimations {
         alterTranslation = true,
         blurStrength = 1
     }) {
-        
+
         CLAnimationHelpers.binaryTimer(this, speed, dt);
         CLAnimationHelpers.cosineWave(this, speed, intensity, dt);
 
@@ -150,7 +178,7 @@ class CLAnimations {
         }
 
         if ((t - this._animTime) < targetMS) {
-            var alteredValue = Math.random() * 0.001;
+            let alteredValue = Math.random() * 0.001;
             if (this._flipped) {
                 iu.ratio -= alteredValue;
                 iu.alpha -= alteredValue;
@@ -217,7 +245,7 @@ class CLAnimations {
             min: 0.0
         })
 
-        
+
         if(this._originalColor && secondaryColor){
             let colorScale = chroma.scale([this._originalColor, secondaryColor]).domain([0, 1]); // Get a color between original, secondaryColor and tertiaryColor, mapped from 0 to 1
             this.coloration.uniforms.color = hexToRGB(colorScale(this._colorScale).num()); // Set color to a color from colorScale, using full intensity cos wave to get a smooth 0 to 1 and back
@@ -240,7 +268,7 @@ class CLAnimations {
             this._originalColorAlpha = this?._source?.data?.lightAlpha;
         }
 
-        var minColorAlpha = this._originalColorAlpha - (this._originalColorAlpha / 10 * intensity);
+        let minColorAlpha = this._originalColorAlpha - (this._originalColorAlpha / 10 * intensity);
         minColorAlpha = parseFloat(minColorAlpha.toFixed(2));
 
         if (this._flipped) {
@@ -441,7 +469,7 @@ class CLAnimations {
         const targetMS = (0.5 + (Math.random() / 2)) * (10 - speed) * 16;
 
         if ((t - this._animTime) < targetMS) {
-            var alteredValue = Math.random() * 0.001 * intensity;
+            let alteredValue = Math.random() * 0.001 * intensity;
             if (this._flipped) {
                 if (shouldFlicker) {
                     iu.ratio -= alteredValue;
@@ -527,7 +555,7 @@ class CLAnimations {
         const ratio = this.bright/this.dim;
         this._shouldAnimateOn = shouldAnimateOn;
         if(!this._updateHook){
-            this._updateHook = (that, updateData, options)=>{
+            this._updateHook = (that, updateData:LightData, options)=>{
                 // console.log(updateData);
                 if(that._shouldAnimateOn){
                     if(options?._id === that?._source?.id){
@@ -540,7 +568,7 @@ class CLAnimations {
                     }
                 }
             }
-            Hooks.on("updateAmbientLight", (updateData, options)=>{if(this._updateHook){return this._updateHook(this, updateData, options)}});
+            Hooks.on("updateAmbientLight", (updateData:LightData, options)=>{if(this._updateHook){return this._updateHook(this, updateData, options)}});
             // Run on first enable
             this._updateHook(this, {}, {_id: this?._source?.id, hidden: false})
         }
@@ -583,7 +611,7 @@ class CLAnimations {
         const targetMS = (0.5 + (Math.random() / 2)) * (10 - circleSpeed) * 16;
 
         if ((this._lastUpdate - this._circleAnimTime) < targetMS) {
-            var alteredValue = Math.random() * 0.001 * circleIntensity;
+            let alteredValue = Math.random() * 0.001 * circleIntensity;
             if (this._flipped) {
                 if (shouldFlicker) {
                     iu.ratio -= alteredValue;
@@ -647,7 +675,7 @@ class CLAnimations {
         shouldFlickerAlpha = false,
         shouldFlickerTranslate = false
     }) {
-        
+
         if(shouldFlicker){
             CLAnimationHelpers.includeAnimation(this, "blitzTorch", dt, {speed, intensity, blurStrength, alterAlpha : shouldFlickerAlpha, alterTranslation: shouldFlickerTranslate, secondaryColor: this._placeableType == "AmbientLight"?this?._source?.data?.tintColor:this?._source?.data?.lightColor});
         } else {
@@ -696,7 +724,7 @@ class CLAnimations {
         }
 
         this._currentPeak = Math.pow(CLAnimationHelpers.getEzFreqPower(listeningBand, gainNode == "soundboard"), exponent);
-       
+
 
         CLAnimationHelpers.forceColorationShader(this, '#ff0000'); // Force the lights tintColor to Red if the user has not set one
         CLAnimationHelpers.includeAnimation(this, "foundryTime", dt, { speed, intensity }); // Call `foundryTime` to manipulate the custom shaders based on time

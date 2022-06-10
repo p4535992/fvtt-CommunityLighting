@@ -1,8 +1,11 @@
-class CLAnimationHelpers {
+import { CLAudioReactor } from "./audioreact";
+import { CommunityLighting } from "./communitylighting";
+
+export class CLAnimationHelpers {
 
     /**
      * EXPERIMENTAL - Cache or get-cached audio analyser and return a float representing the current relative peak of playing audio
-     * 
+     *
      * @param {PointSource} source - The animations PointSource, 'this' from your animation function
      * @param {float} currentPeak - The current audio power peak, used to smooth between peaks
      * @param {int} smoothing - How much smoothing to apply to peak changes from 1 to 10
@@ -30,35 +33,35 @@ class CLAnimationHelpers {
 
     /**
      * EXPERIMENTAL - Get the 'energy' of a listening band from 0..1
-     * @param {String} listeningBand - String representation of the listening band, low, mid or high 
+     * @param {String} listeningBand - String representation of the listening band, low, mid or high
      * @param {Boolean} soundBoard - Should the returned value use the SoundBoard analyser
-     * @returns 
+     * @returns
      */
     static getEzFreqPower(listeningBand, soundBoard = false) {
         let newPeak = 0;
         switch (listeningBand) {
             case 'low':
-                newPeak = CLAudioReactor.getEZFreqPower(0, soundBoard);
+                newPeak = CLAudioReactor.getEZFreqPower(0, soundBoard,undefined,undefined);
                 break;
             case 'mid':
-                newPeak = CLAudioReactor.getEZFreqPower(1, soundBoard);
+                newPeak = CLAudioReactor.getEZFreqPower(1, soundBoard,undefined,undefined);
                 break;
             case 'high':
-                newPeak = CLAudioReactor.getEZFreqPower(2, soundBoard);
+                newPeak = CLAudioReactor.getEZFreqPower(2, soundBoard,undefined,undefined);
                 break;
 
             default:
-                newPeak = CLAudioReactor.getEZFreqPower(0, soundBoard);
+                newPeak = CLAudioReactor.getEZFreqPower(0, soundBoard,undefined,undefined);
                 break;
         }
-        
+
         return newPeak;
     }
 
     /**
      * Creates and flips a _flipped flag on your light source after maxTime divided by speed. Useful for flashing animations
      * Call at the start of your animation function.
-     * 
+     *
      * Usage: After using this, check `this._flipped` in your animation function, and run different code based on the result
      * @param {PointSource} source - The animations PointSource, 'this' from your animation function
      * @param {int} speed - How quickly the phase will change. The speed variable, passed into your animation
@@ -92,7 +95,7 @@ class CLAnimationHelpers {
     /**
      * Creates and switches a _phase property on your light source after maxTime divided by speed. Useful for flashing animations.
      * Call at the start of your animation function.
-     * 
+     *
      * Usage: After using this, check `this._phase` in your animation function, and run different code based on the result
      * @param {PointSource} source - The animations PointSource, 'this' from your animation function
      * @param {int} speed - How quickly the phase will change. The speed variable, passed into your animation
@@ -128,7 +131,7 @@ class CLAnimationHelpers {
     /**
      * Creates and flips a _flipped flag on your light source after a random time based on speed and offPhaseDelay. Useful for randomly blinking animations.
      * Call at the start of your animation function.
-     * 
+     *
      * Usage: After using this, check `this._flipped` in your animation function, and run different code based on the result
      * @param {PointSource} source - The animations PointSource, 'this' from your animation function
      * @param {int} speed - The speed variable, passed into your animation
@@ -136,7 +139,7 @@ class CLAnimationHelpers {
      * @param {int} offPhaseDelay - How long to wait before attempting random flip. Higher values increase the 'off' time
      * @param {Array<number>} [timeRangeFlipped=[1,1]] - Range of time that the phase can remain flipped 'on'. Both elements must be >= 1, and timeRangeFlipped[1] must be >= timeRangeFlipped[0]
      */
-    static binaryFlashRandomInterval(source, speed, dt, offPhaseDelay = 10, timeRangeFlipped = [1, 1]) {
+    static binaryFlashRandomInterval(source, speed, dt, offPhaseDelay = 10, timeRangeFlipped:[start:number,end:number] = [1, 1]) {
 
         // Ensure the array is valid
         if (timeRangeFlipped.length != 2 || timeRangeFlipped[0] < 1 || timeRangeFlipped[1] < 1 || timeRangeFlipped[0] > timeRangeFlipped[1]) {
@@ -178,7 +181,7 @@ class CLAnimationHelpers {
     /**
      * Creates and switches a _phase property on your light source after a random time based on speed and offPhaseDelay. Useful for randomly blinking animations.
      * Call at the start of your animation function.
-     * 
+     *
      * Usage: After using this, check `this._phase` in your animation function, and run different code based on the result
      * @param {PointSource} source - The animations PointSource, 'this' from your animation function
      * @param {int} speed - The speed variable, passed into your animation
@@ -186,8 +189,8 @@ class CLAnimationHelpers {
      * @param {int} offPhaseDelay - How long to wait before attempting random flip. Higher values increase the 'off' time
      * @param {Array<number>} [timeRangeFlipped=[1,1]] - Range of time that the phase can remain flipped 'on'. Both elements must be >= 1, and timeRangeFlipped[1] must be >= timeRangeFlipped[0]
      */
-    static ternaryFlashRandomInterval(source, speed, dt, offPhaseDelay = 10, timeRangeFlipped = [1, 1]) {
-        
+    static ternaryFlashRandomInterval(source, speed, dt, offPhaseDelay = 10, timeRangeFlipped:[start:number,end:number] = [1, 1]) {
+
         // Ensure the array is valid
         if (timeRangeFlipped.length != 2 || timeRangeFlipped[0] < 1 || timeRangeFlipped[1] < 1 || timeRangeFlipped[0] > timeRangeFlipped[1]) {
             console.error('CommunityLighting error: ternaryRandomInterval called with invalid timeRangeFlipped: ' + timeRangeFlipped);
@@ -214,7 +217,7 @@ class CLAnimationHelpers {
                 if (Math.random() > (0.9 - (0.08 * speed))) {
                     // Randomly select between phase 1 or 2
                     source._phase = Math.random()>0.5?1:2;
-                    
+
                     // Randomly select how long the flash remains in phase 1/2 from timeRangeFlipped
                     source._revertTime = Math.floor(Math.random() * (timeRangeFlipped[1] - timeRangeFlipped[0] + 1) + timeRangeFlipped[0]);
                 }
@@ -230,11 +233,11 @@ class CLAnimationHelpers {
     /**
      * Generate a cosine wave, based on Foundry Core animations, and attach it to the source under the _wave property
      * _wave.simplifiedValue and _wave.invertedSimplifiedValue are floats between 0 and 1, and are useful for keeping things simple.
-     * @param {PointSource} source 
-     * @param {int} speed 
-     * @param {int} intensity 
-     * @param {float} dt 
-     * @param {int} speedMultiplier 
+     * @param {PointSource} source
+     * @param {int} speed
+     * @param {int} intensity
+     * @param {float} dt
+     * @param {int} speedMultiplier
      */
     static cosineWave(source, speed, intensity, dt, speedMultiplier = 1) {
         if(!source._wave){
@@ -246,7 +249,7 @@ class CLAnimationHelpers {
         source._wave.distance = distance;
         source._wave.a = source._wave.pulseAngle = (source._wave.pulseAngle ?? 0) + da;
         source._wave.delta = (Math.cos(source._wave.pulseAngle) + 1) / 2;
-        
+
         source._wave.simplifiedValue = source._wave.delta * source._wave.distance;
         source._wave.invertedSimplifiedValue = 1 - source._wave.simplifiedValue;
 
@@ -265,8 +268,8 @@ class CLAnimationHelpers {
             CLAnimationHelpers.removeIlluminationBlur(source);
         }
         if(!source.illumination._blurred && strength > 0){
-            let blurFilter = new PIXI.filters.BlurFilter(strength, quality)
-            blurFilter.blendMode = PIXI.BLEND_MODES.MAX_COLOR;
+            const blurFilter = new PIXI.filters.BlurFilter(strength, quality)
+            blurFilter.blendMode = PIXI.BLEND_MODES.COLOR; // MAX_COLOR;
             if(source.illumination.filters){
                 source.illumination.filters.push(blurFilter);
             } else {
@@ -286,8 +289,8 @@ class CLAnimationHelpers {
             CLAnimationHelpers.removeColorationBlur(source);
         }
         if(!source.coloration._blurred){
-            let blurFilter = new PIXI.filters.BlurFilter(strength, quality);
-            blurFilter.blendMode = PIXI.BLEND_MODES.MAX_COLOR;
+            const blurFilter = new PIXI.filters.BlurFilter(strength, quality);
+            blurFilter.blendMode = PIXI.BLEND_MODES.COLOR; // MAX_COLOR;
             if(source.coloration.filters){
                 source.coloration.filters.push(blurFilter);
             } else {
@@ -330,12 +333,12 @@ class CLAnimationHelpers {
 
     /**
      * Forces the Coloration uniforms to work by updating the AmbientLight or Token source with a tintColor if it doesn't have one
-     * 
+     *
      * @param {PointSource} source - The animations PointSource, 'this' from your animation function
      */
     static async forceColorationShader(source, color = '#000001') {
         if (source._source) {
-            var isToken = source._source.light ? true : false;
+            const isToken = source._source.light ? true : false;
             if (isToken) {
                 if (!source._source.data.lightColor || source._source.data.lightColor === '#000000') {
                     await source._source.update({

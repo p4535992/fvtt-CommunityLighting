@@ -1,4 +1,4 @@
-class CLShaderFunctions {
+export class CLShaderFunctions {
     static rotate = `
     vec2 rotateUV(in vec2 uv, in float rotation, in vec2 mid)
     {
@@ -107,7 +107,7 @@ class CLShaderFunctions {
  * @implements {StandardIlluminationShader}
  * @author Blitz
  */
- class CLTorchIlluminationShader extends StandardIlluminationShader {
+ class CLTorchIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float alpha;
@@ -118,7 +118,7 @@ class CLShaderFunctions {
     uniform float smoothness;
     uniform float translateX;
     uniform float translateY;
-    
+
     void main() {
         float xdist = 0.5 + translateX;
         float ydist = 0.5 + translateY;
@@ -138,7 +138,7 @@ class CLShaderFunctions {
  * @implements {StandardIlluminationShader}
  * @author SecretFire
  */
-class CLCustomWaveIlluminationShader extends StandardIlluminationShader {
+class CLCustomWaveIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float time;
@@ -148,13 +148,13 @@ class CLCustomWaveIlluminationShader extends StandardIlluminationShader {
     uniform vec3 colorDim;
     uniform vec3 colorBright;
     varying vec2 vUvs;
-  
+
     const float MAX_INTENSITY = 1.1;
     const float MIN_INTENSITY = 0.8;
 
     // Normalized wave function to create the pulsating rings
     // time allows the wave to move
-    // dist modulated by intensity controls the wave length. 
+    // dist modulated by intensity controls the wave length.
     float wave(in float dist) {
         float sinWave = 0.5 * (sin(-time * 6.0 + dist * 10.0 * intensity) + 1.0);
 
@@ -164,7 +164,7 @@ class CLCustomWaveIlluminationShader extends StandardIlluminationShader {
         // the wave must be normalized before (values between 0 and 1)
         return ((MAX_INTENSITY - MIN_INTENSITY) * sinWave) + MIN_INTENSITY;
     }
-  
+
     void main() {
         // distance of the current coordinate from the center
         // multiplied by two to have a distance of 1 for the maximum distance value of a bounding inner circle of the quad
@@ -187,7 +187,7 @@ class CLCustomWaveIlluminationShader extends StandardIlluminationShader {
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLCustomWaveColorationShader extends StandardColorationShader {
+class CLCustomWaveColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float time;
@@ -195,17 +195,17 @@ class CLCustomWaveColorationShader extends StandardColorationShader {
     uniform float alpha;
     uniform vec3 color;
     varying vec2 vUvs;
-  
+
     const float MAX_INTENSITY = 1.35;
     const float MIN_INTENSITY = 0.8;
-  
+
     ${AbstractBaseShader.FADE(4, 0.90)}
-  
+
     float wave(in float dist) {
         float sinWave = 0.5 * (sin(-time * 6.0 + dist * 10.0 * intensity) + 1.0);
         return ((MAX_INTENSITY - MIN_INTENSITY) * sinWave) + MIN_INTENSITY;
     }
-  
+
     void main() {
         float dist = distance(vUvs, vec2(0.5)) * 2.0;
         float wfade = fade(dist) * wave(dist);
@@ -218,7 +218,7 @@ class CLCustomWaveColorationShader extends StandardColorationShader {
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLForceGridColorationShader extends StandardColorationShader {
+class CLForceGridColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float time;
@@ -244,7 +244,7 @@ class CLForceGridColorationShader extends StandardColorationShader {
     }
 
     float fpert(in float d, in float p) {
-        return max(0.3 - 
+        return max(0.3 -
                    mod(p + time + d * 0.3, 3.5),
                    0.0) * intensity * 2.0;
     }
@@ -264,19 +264,19 @@ class CLForceGridColorationShader extends StandardColorationShader {
         vec2 uv = suv - vec2(0.205, 0.205);
         vec2 cid2 = floor(uv);
         float cid = (cid2.y + cid2.x);
-	
+
         uv = fract(uv);
         float r = 0.3;
         float d = 1.0;
         float e;
-	
+
         const int it = 7;
         for(int i = 0; i < it; i++) {
 	        e = uv.x - r;
 	        d += pow(clamp(1.0 - abs(e * 0.75), 0.0, 1.0), 200.0);
 	        if(e > 0.0) {
 		        uv.x = (uv.x - r) / (2.0 - r);
-	        } 
+	        }
 	        uv = uv.yx;
         }
 
@@ -284,7 +284,7 @@ class CLForceGridColorationShader extends StandardColorationShader {
         vec3 col = vec3(max(d - 1.0, 0.0)) * 1.8;
         col *= pert(suv, dist, d, w);
         col += color * 0.70 * w;
-	
+
         return vec4(col * color, 1.0);
     }
 
@@ -302,7 +302,7 @@ class CLForceGridColorationShader extends StandardColorationShader {
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLSmokePatchColorationShader extends StandardColorationShader {
+class CLSmokePatchColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float time;
@@ -318,10 +318,10 @@ class CLSmokePatchColorationShader extends StandardColorationShader {
     float smokefading(in float dist) {
         float t = time * 0.4;
         vec2 uv = vUvs * 10.0;
-        return pow(1.0 - dist, 
-                   mix( 0.20, 
+        return pow(1.0 - dist,
+                   mix( 0.20,
                         max( fbm(uv + t),
-                             fbm(uv - t)), 
+                             fbm(uv - t)),
                         pow(dist, intensity * 0.5))) *
                         pow(1.0 - dist, 0.20);
     }
@@ -338,7 +338,7 @@ class CLSmokePatchColorationShader extends StandardColorationShader {
  * @implements {StandardIlluminationShader}
  * @author SecretFire
  */
-class CLSmokePatchIlluminationShader extends StandardIlluminationShader {
+class CLSmokePatchIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float time;
@@ -366,7 +366,7 @@ class CLSmokePatchIlluminationShader extends StandardIlluminationShader {
 
     void main() {
         float dist = distance(vUvs, vec2(0.5)) * 2.0;
-        vec3 color = mix(colorDim, 
+        vec3 color = mix(colorDim,
                          colorBright,
                          smoothstep(
                              clamp(1.0 - ratio - 0.1, 0.0, 1.0),
@@ -381,7 +381,7 @@ class CLSmokePatchIlluminationShader extends StandardIlluminationShader {
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLStarLightColorationShader extends StandardColorationShader {
+class CLStarLightColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float time;
@@ -401,7 +401,7 @@ class CLStarLightColorationShader extends StandardColorationShader {
         float t = time * 0.40;
         float cost = cos(t);
         float sint = sin(t);
-    
+
         mat2 rotmat = mat2(cost, -sint, sint, cost);
         uv *= rotmat;
         return uv;
@@ -424,7 +424,7 @@ class CLStarLightColorationShader extends StandardColorationShader {
 
     void main() {
         float dist = distance(vUvs, vec2(0.50)) * 2.0;
-        vec3 fcolor = mix(scolor, 
+        vec3 fcolor = mix(scolor,
                           color,
                           clamp(1.0 - dist, 0.0, 1.0)) * musicwave;
         gl_FragColor = vec4(clamp(fcolor * starlight(dist) * alpha, 0.0, 1.0), 1.0);
@@ -443,7 +443,7 @@ class CLStarLightColorationShader extends StandardColorationShader {
  * @implements {StandardIlluminationShader}
  * @author SecretFire
  */
-class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
+class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
     static fragmentShader = `
     precision mediump float;
     uniform float time;
@@ -456,7 +456,7 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
 
     void main() {
         float dist = distance(vUvs, vec2(0.5)) * 2.0;
-        vec3 color = mix(colorDim, 
+        vec3 color = mix(colorDim,
                          colorBright,
                          smoothstep(
                              clamp(0.8 - ratio, 0.0, 1.0),
@@ -473,7 +473,7 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
  * @extends {StandardIlluminationShader}
  * @author Blitz
  */
- class CLCustomForgottenAdventuresShader extends StandardIlluminationShader {
+ class CLCustomForgottenAdventuresShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
     static fragmentShader = `
   precision mediump float;
   uniform float alpha;
@@ -508,7 +508,7 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
  * @extends {StandardIlluminationShader}
  * @author Blitz
  */
- class CLPolyIlluminationShader extends StandardIlluminationShader {
+ class CLPolyIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
     static fragmentShader = `
     precision mediump float;
 
@@ -525,30 +525,30 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
     uniform float translateX;
     uniform float translateY;
     varying vec2 vUvs;
-    
-    void main(){  
+
+    void main(){
 
       vec3 color = vec3(0.0);
       float d = 0.0;
       vec2 st = vUvs;
-    
+
       st = st *2.-1.;
-    
+
       // Angle and radius from the current pixel
       float a = atan(st.x, st.y)+PI;
       float r = TWO_PI/shapeSides;
-    
+
       // Shaping function that modulate the distance
       d = cos(floor(.5+a/r)*r-a)*length(vec2(st.x + translateX, st.y + translateY));
-    
+
       float dist = distance(vUvs, vec2(0.5)) * 2.0;
-      
+
       float dimRadius = 0.7 * scale;
       float brightRadius = dimRadius * ratio;
-      
+
       vec3 dimCol = vec3(1.0-smoothstep((dimRadius-outerSmoothness),(dimRadius+outerSmoothness),d)) * colorDim;
       vec3 brightCol = vec3(1.0-smoothstep((brightRadius-smoothness),(brightRadius+smoothness),d)) * colorBright;
-      
+
       color = clamp(dimCol + brightCol, 0.0, colorBright.x);
       gl_FragColor = vec4(color * alpha, 1.0);
   }`;
@@ -567,7 +567,7 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
  * @extends {StandardIlluminationShader}
  * @author Blitz
  */
- class CLFireIlluminationShader extends StandardIlluminationShader {
+ class CLFireIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
     static fragmentShader = `precision mediump float;
 
     #define PI 3.14159265359
@@ -590,26 +590,26 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
     float snoise(vec3 uv, float res)
     {
       const vec3 s = vec3(1e0, 1e2, 1e3);
-      
+
       uv *= res;
-      
+
       vec3 uv0 = floor(mod(uv, res))*s;
       vec3 uv1 = floor(mod(uv+vec3(1.), res))*s;
-      
+
       vec3 f = fract(uv); f = f*f*(3.0-2.0*f);
-    
+
       vec4 v = vec4(uv0.x+uv0.y+uv0.z, uv1.x+uv0.y+uv0.z,
                       uv0.x+uv1.y+uv0.z, uv1.x+uv1.y+uv0.z);
-    
+
       vec4 r = fract(sin(v*1e-1)*1e3);
       float r0 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);
-      
+
       r = fract(sin((v + uv1.z - uv0.z)*1e-1)*1e3);
       float r1 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);
-      
+
       return mix(r0, r1, f.z)*2.-1.;
     }
-    
+
     void main(){
 
       float xdist = 0.5 + translateX;
@@ -620,9 +620,9 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
         circleColor = mix(colorDim, colorBright, smoothstep(dist - (smoothness / 100.0), dist + (smoothness / 100.0), ratio));
       }
       vec2 p = -.5 + vUvs;
-      
+
       float color = (3.0 * musicWave) - (3.*length(2.7*p) / flameRatio);
-      
+
       vec3 coord = vec3(atan(p.x,p.y)/TWO_PI+.5, length(p)*(.4/flameRatio), .5);
       for(int i = 1; i <= 7; i++)
       {
@@ -648,7 +648,7 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
  * @extends {StandardColorationShader}
  * @author Blitz
  */
- class CLFireColorationShader extends StandardColorationShader {
+ class CLFireColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
     static fragmentShader = `precision mediump float;
 
     #define PI 3.14159265359
@@ -665,31 +665,31 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
     float snoise(vec3 uv, float res)
     {
       const vec3 s = vec3(1e0, 1e2, 1e3);
-      
+
       uv *= res;
-      
+
       vec3 uv0 = floor(mod(uv, res))*s;
       vec3 uv1 = floor(mod(uv+vec3(1.), res))*s;
-      
+
       vec3 f = fract(uv); f = f*f*(3.0-2.0*f);
-    
+
       vec4 v = vec4(uv0.x+uv0.y+uv0.z, uv1.x+uv0.y+uv0.z,
                       uv0.x+uv1.y+uv0.z, uv1.x+uv1.y+uv0.z);
-    
+
       vec4 r = fract(sin(v*1e-1)*1e3);
       float r0 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);
-      
+
       r = fract(sin((v + uv1.z - uv0.z)*1e-1)*1e3);
       float r1 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);
-      
+
       return mix(r0, r1, f.z)*2.-1.;
     }
-    
+
     void main(){
       vec2 p = -.5 + vUvs;
-      
+
       float fColor = (3.0 * musicWave) - (3.*length(2.7*p) / ratio);
-      
+
       vec3 coord = vec3(atan(p.x,p.y)/TWO_PI+.5, length(p)*(.4/ratio), .5);
       for(int i = 1; i <= 7; i++)
       {
@@ -698,7 +698,7 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
       }
       vec4 finalColor = vec4( fColor * color.x, (pow(max(fColor,0.),2.)*0.4)*color.y, (pow(max(fColor,0.),3.)*0.15)*color.z , 1.0) * (3.0 * musicWave) * ramp;
       gl_FragColor = finalColor * alpha;
-    
+
     }
   `;
   static defaultUniforms = mergeObject(super.defaultUniforms, {
@@ -707,4 +707,3 @@ class CLSmoothTransitionIlluminationShader extends StandardIlluminationShader {
     ramp: 1.0
 });
 }
-  

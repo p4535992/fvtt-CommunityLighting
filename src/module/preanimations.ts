@@ -1,17 +1,20 @@
-class CLPreAnimation {
+import { CLAnimationHelpers } from "./animationhelpers";
+import { CLCustomPropertyManager } from "./custompropertymanager";
+
+export class CLPreAnimation {
 
     /**
      * Finds and caches the AmbientLight placeable as _source, and sets _placeableType to "AmbientLight" or "Token"
-     * 
+     *
      * @param {PointSource} pointSource - The animations PointSource, 'this' from your animation function
      */
     static cachePlaceable(pointSource) {
         if (!pointSource._source) {
-            pointSource._source = canvas.lighting.placeables.find(t => t.source == pointSource);
+            pointSource._source = canvas.lighting?.placeables.find(t => t.source == pointSource);
             if (pointSource._source) {
                 pointSource._placeableType = "AmbientLight";
             } else {
-                pointSource._source = canvas.tokens.placeables.find(t => t.light == pointSource);
+                pointSource._source = canvas.tokens?.placeables.find(t => t.light == pointSource);
                 if (pointSource._source) {
                     pointSource._placeableType = "Token";
                 }

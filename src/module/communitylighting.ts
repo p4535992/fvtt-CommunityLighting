@@ -3,16 +3,20 @@
  * Lighting animations for 0.7.x
  */
 
-class CommunityLighting {
+import { CLAnimationManager } from "./animationmanager";
+import { CLAudioReactor } from "./audioreact";
+import { CommunityLightingSettings } from "./communitylightingsettings";
+import CONSTANTS from "./constants";
+import { CLMonkeyPatcher } from "./monkeypatcher";
 
-    static moduleName = "CommunityLighting"
+export class CommunityLighting {
 
     static animationManager;
 
     static handlebarsHelpers = {
         "communitylighting-parseauthors": (obj) => {
-            var authors = Object.keys(obj);
-            var data = "";
+            const authors = Object.keys(obj);
+            let data = "";
             authors.forEach((author) => {
                 data += `<p>${author}</p>
                 `;
@@ -29,14 +33,14 @@ class CommunityLighting {
         CommunityLighting.animationManager = new CLAnimationManager();
         await CommunityLighting.animationManager.registerAnimations();
 
-        game.settings.registerMenu(CommunityLighting.moduleName, "mySettingsMenu", {
+        game.settings.registerMenu(CONSTANTS.MODULE_NAME, "mySettingsMenu", {
             name: game.i18n.localize("COMMUNITYLIGHTING.settings.name"),
             label: game.i18n.localize("COMMUNITYLIGHTING.settings.label"),
             icon: "fas fa-lightbulb",
             type: CommunityLightingSettings,
             restricted: true
         });
-        game.settings.register(CommunityLighting.moduleName, 'closeLightOnSubmit', {
+        game.settings.register(CONSTANTS.MODULE_NAME, 'closeLightOnSubmit', {
             name: game.i18n.localize('COMMUNITYLIGHTING.settings.closeLightOnSubmit.name'),
             hint: game.i18n.localize('COMMUNITYLIGHTING.settings.closeLightOnSubmit.hint'),
             scope: 'client',
@@ -44,7 +48,7 @@ class CommunityLighting {
             type: Boolean,
             default: true
         });
-        game.settings.register(CommunityLighting.moduleName, 'closeTokenOnSubmit', {
+        game.settings.register(CONSTANTS.MODULE_NAME, 'closeTokenOnSubmit', {
             name: game.i18n.localize('COMMUNITYLIGHTING.settings.closeTokenOnSubmit.name'),
             hint: game.i18n.localize('COMMUNITYLIGHTING.settings.closeTokenOnSubmit.hint'),
             scope: 'client',
@@ -63,6 +67,3 @@ class CommunityLighting {
         CLMonkeyPatcher.runPatches()
     }
 }
-
-Hooks.on("init", CommunityLighting.onInit);
-Hooks.on("ready", CommunityLighting.onReady);

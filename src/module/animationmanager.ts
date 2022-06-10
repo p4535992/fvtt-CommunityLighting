@@ -1,4 +1,7 @@
-class CLAnimationManager {
+import { CLAnimations } from "./animations";
+import { CLCustomPropertyManager } from "./custompropertymanager";
+
+export class CLAnimationManager {
     communityAnimations;
 
     constructor() {
@@ -32,21 +35,21 @@ class CLAnimationManager {
     }
 
     async registerAnimations() {
-        let customLightsObject = await this.getCommunityLights();
-        let animations = {};
+        const customLightsObject = await this.getCommunityLights();
+        const animations = {};
         await
         function () {
-            for (var author in customLightsObject) {
+            for (const author in customLightsObject) {
                 animations[`${author}CommunityLightingSeparatorStart`] = {
                     label: `${author}`
                 }
-                let lightsArray = customLightsObject[author].lights;
+                const lightsArray = customLightsObject[author].lights;
                 lightsArray?.forEach(light => {
                     animations[`${author}${light.name}`] = {
                         label: light.name,
                         animation: this.communityAnimations[light.animationFunction],
-                        illuminationShader: CLAnimationManager.getShaderClass(light.shaders?.illumination) || StandardIlluminationShader,
-                        colorationShader: CLAnimationManager.getShaderClass(light.shaders?.coloration) || StandardColorationShader
+                        illuminationShader: CLAnimationManager.getShaderClass(light.shaders?.illumination) || AdaptiveLightingShader,//StandardIlluminationShader,
+                        colorationShader: CLAnimationManager.getShaderClass(light.shaders?.coloration) || AdaptiveColorationShader //StandardColorationShader
                     }
                     if (!light.customProperties) {
                         light.customProperties = [];

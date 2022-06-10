@@ -1,7 +1,9 @@
-class CLCustomPropertyManager {
+import CONSTANTS from "./constants";
+
+export class CLCustomPropertyManager {
 
     static async updateCustomProperties(updateData, lightAnimationChanges) {
-        var customProperties = JSON.parse(JSON.stringify(lightAnimationChanges)); // Clone changes
+        const customProperties = JSON.parse(JSON.stringify(lightAnimationChanges)); // Clone changes
 
         // Ensure we are not saving the data core stores in the db
         Object.keys(customProperties).forEach(key => {
@@ -10,27 +12,27 @@ class CLCustomPropertyManager {
             }
         });
 
-        let placeableObject = canvas.lighting.get(updateData.id) ?? canvas.tokens.get(updateData.id);
+        const placeableObject:Token | AmbientLight | undefined = canvas.lighting?.get(updateData.id) ?? canvas.tokens?.get(updateData.id);
         if (!customProperties || Object.getOwnPropertyNames(customProperties).length == 0) {
-            // placeableObject.document.unsetFlag("CommunityLighting", "customProperties");
+            // placeableObject.document.unsetFlag(CONSTANTS.MODULE_NAME, "customProperties");
 
             // No custom properties detected. Previously, we cleared the flags. However, with 0.8,
             // this is hit when intensity and/or speed only are changed, causing breakage on refresh.
             console.log("No C-prop")
         } else {
             //updateData.flags.CommunityLighting = {customProperties: customProperties};
-            placeableObject.document.setFlag("CommunityLighting", "customProperties", customProperties);
+            await placeableObject?.document?.setFlag(CONSTANTS.MODULE_NAME, "customProperties", customProperties);
         }
     }
 
     static async saveCustomProperties(data, flagsChanges) {
-        var customProperties = JSON.parse(JSON.stringify(flagsChanges)); // Clone changes
+        const customProperties = JSON.parse(JSON.stringify(flagsChanges)); // Clone changes
 
         if (customProperties) {
             // Add customProperties from the flag into the lightAnimation object
             mergeObject(data._source.lightAnimation, customProperties)
             if (data._source.actor) {
-                data._source.update({lightAnimation: pointSource._source.data.lightAnimation}, {diff: false, loadedProperty: true})
+                data._source.update({lightAnimation: customProperties.pointSource._source.data.lightAnimation}, {diff: false, loadedProperty: true})
             }
         }
     }
@@ -39,7 +41,7 @@ class CLCustomPropertyManager {
         if (!pointSource._source) {
             return; // Source is not cached yet, return
         }
-        var customProperties = pointSource.object.getFlag("CommunityLighting", "customProperties");
+        const customProperties = pointSource.object.getFlag(CONSTANTS.MODULE_NAME, "customProperties");
 
         // Remove any customProperties from the current lightAnimation object
         Object.keys(pointSource.object.data._source.lightAnimation).forEach(key => {
@@ -66,7 +68,7 @@ class CLCustomPropertyManager {
     }
 
     static async addCustomProperties(objectConfig, customPropertySibling, customAnimationProperties, animateShow = false) {
-        var customAnimationPropertiesClone = JSON.parse(JSON.stringify(customAnimationProperties)); // Clone object so we can reverse it without reversing original
+        const customAnimationPropertiesClone = JSON.parse(JSON.stringify(customAnimationProperties)); // Clone object so we can reverse it without reversing original
         const animation = objectConfig.object.data?.lightAnimation?._source || objectConfig.object.light.animation;
 
         function insertDescription(customPropertyObject){
@@ -74,7 +76,7 @@ class CLCustomPropertyManager {
         }
 
         customAnimationPropertiesClone.reverse().forEach((customPropertyObject) => {
-            var currentValue;
+            let currentValue;
             if (animation) {
                 currentValue = animation[customPropertyObject.varName] ?? customPropertyObject.default;
             } else {
@@ -82,20 +84,22 @@ class CLCustomPropertyManager {
             }
 
             switch (customPropertyObject.type) {
-                case "speedDescription":
+                case "speedDescription":{
                     if(currentValue){
-                        var customPropertyEl = $(`<p class="hint community-lighting-custom-property-noanim">${currentValue}</p>`);
+                        const customPropertyEl = $(`<p class="hint community-lighting-custom-property-noanim">${currentValue}</p>`);
                         $('[name="lightAnimation.speed"]').parent().parent().append(customPropertyEl)
                     }
                     break;
-                case "intensityDescription":
+                }
+                case "intensityDescription":{
                     if(currentValue){
-                        var customPropertyEl = $(`<p class="hint community-lighting-custom-property-noanim">${currentValue}</p>`);
+                        const customPropertyEl = $(`<p class="hint community-lighting-custom-property-noanim">${currentValue}</p>`);
                         $('[name="lightAnimation.intensity"]').parent().parent().append(customPropertyEl)
                     }
                     break;
-                case "color":
-                    var customPropertyEl = $(
+                  }
+                case "color":{
+                    const customPropertyEl = $(
                         `<div class="form-group community-lighting-custom-property">
                             <label>${customPropertyObject.title}</label>
                             <input class="color" type="text" name="lightAnimation.${customPropertyObject.varName}" value="${currentValue}">
@@ -107,11 +111,12 @@ class CLCustomPropertyManager {
                     }
                     customPropertySibling.after(customPropertyEl);
                     if (animateShow) {
-                        customPropertyEl.show('normal');
+                        customPropertyEl.show(4000,'normal');
                     }
                     break;
-                case "range":
-                    var customPropertyEl = $(
+                  }
+                case "range":{
+                    const customPropertyEl = $(
                         `<div class="form-group community-lighting-custom-property">
                         <label>${customPropertyObject.title}</label>
                         <div class="form-fields">
@@ -125,11 +130,12 @@ class CLCustomPropertyManager {
                     }
                     customPropertySibling.after(customPropertyEl);
                     if (animateShow) {
-                        customPropertyEl.show('normal');
+                        customPropertyEl.show(4000,'normal');
                     }
                     break;
-                case "checkbox":
-                    var customPropertyEl = $(
+                  }
+                case "checkbox":{
+                    const customPropertyEl = $(
                         `<div class="form-group community-lighting-custom-property">
                         <label>${customPropertyObject.title}</label>
                         <input type="checkbox" name="lightAnimation.${customPropertyObject.varName}" data-dtype="Boolean" ${currentValue ? "checked" : ""}>
@@ -140,16 +146,17 @@ class CLCustomPropertyManager {
                     }
                     customPropertySibling.after(customPropertyEl);
                     if (animateShow) {
-                        customPropertyEl.show('normal');
+                        customPropertyEl.show(4000,'normal');
                     }
 
                     break;
-                case "select":
-                    var options = '';
+                  }
+                case "select":{
+                    let options = '';
                     customPropertyObject.options.forEach(option => {
                         options += `<option value="${option.value}"${option.value == currentValue ? "selected" : ""}>${option.label}</option>`;
                     })
-                    var customPropertyEl = $(
+                    const customPropertyEl = $(
                         `<div class="form-group community-lighting-custom-property">
                         <label>${customPropertyObject.title}</label>
                         <div class="form-fields">
@@ -164,13 +171,14 @@ class CLCustomPropertyManager {
                     }
                     customPropertySibling.after(customPropertyEl);
                     if (animateShow) {
-                        customPropertyEl.show('normal');
+                        customPropertyEl.show(4000,'normal');
                     }
 
                     break;
-
-                default:
+                  }
+                default:{
                     break;
+                }
             }
         })
     }
@@ -187,15 +195,15 @@ class CLCustomPropertyManager {
 
     static async onRenderTokenOrLightConfig(objectConfig, html, data) {
         if(objectConfig.object.documentName === 'AmbientLight'){
-            objectConfig.options.closeOnSubmit = game.settings.get(CommunityLighting.moduleName, "closeLightOnSubmit");
+            objectConfig.options.closeOnSubmit = game.settings.get(CONSTANTS.MODULE_NAME, "closeLightOnSubmit");
         } else if (objectConfig.object.documentName === 'Token'){
-            objectConfig.options.closeOnSubmit = game.settings.get(CommunityLighting.moduleName, "closeTokenOnSubmit");
+            objectConfig.options.closeOnSubmit = game.settings.get(CONSTANTS.MODULE_NAME, "closeTokenOnSubmit");
         }
-        var animTypeSelector = html.find("[name='lightAnimation.type']"); // Get the animation type selector element
-        var customPropertySibling = html.find('[name="lightAnimation.intensity"]').parent().parent(); // Get the div holding the intensity slider so we can add our props after it
+        const animTypeSelector = html.find("[name='lightAnimation.type']"); // Get the animation type selector element
+        const customPropertySibling = html.find('[name="lightAnimation.intensity"]').parent().parent(); // Get the div holding the intensity slider so we can add our props after it
         CLCustomPropertyManager.addOptGroups(html);
         // Grab the current value, and set any custom properties up
-        var customAnimationProperties = CONFIG.Canvas.lightAnimations[animTypeSelector.val()]?.customProperties;
+        let customAnimationProperties = (<any>CONFIG.Canvas.lightAnimations[animTypeSelector.val()])?.customProperties;
 
         CLCustomPropertyManager.removeAllCustomProperties(html);
 
@@ -206,9 +214,9 @@ class CLCustomPropertyManager {
         // When the type changes, set up any custom properties
         animTypeSelector.on('change', function () {
             CLCustomPropertyManager.removeAllCustomProperties(html);
-            customAnimationProperties = CONFIG.Canvas.lightAnimations[this.value]?.customProperties;
+            customAnimationProperties = (<any>CONFIG.Canvas.lightAnimations[this.value])?.customProperties;
             if (customAnimationProperties && customAnimationProperties.length > 0) {
-                CLCustomPropertyManager.addCustomProperties(objectConfig.object, customPropertySibling, CONFIG.Canvas.lightAnimations[this.value].customProperties, true);
+                CLCustomPropertyManager.addCustomProperties(objectConfig.object, customPropertySibling, (<any>CONFIG.Canvas.lightAnimations[this.value]).customProperties, true);
             }
         });
     }
@@ -221,9 +229,9 @@ class CLCustomPropertyManager {
 
     static onUpdateLightOrToken(doc, changes, diff, user) {
         if(!changes?.flags?.CommunityLighting){
-            if(doc.documentName === 'AmbientLight' && doc.sheet._state == BaseEntitySheet.RENDER_STATES.RENDERING && game.settings.get(CommunityLighting.moduleName, "closeLightOnSubmit") === false){
+            if(doc.documentName === 'AmbientLight' && doc.sheet._state == DocumentSheet.RENDER_STATES.RENDERING && game.settings.get(CONSTANTS.MODULE_NAME, "closeLightOnSubmit") === false){
                 ui.notifications.notify(game.i18n.localize("COMMUNITYLIGHTING.notif.lightUpdated"));
-            } else if (doc.documentName === 'Token' && changes.lightAnimation && game.settings.get(CommunityLighting.moduleName, "closeTokenOnSubmit") === false){
+            } else if (doc.documentName === 'Token' && changes.lightAnimation && game.settings.get(CONSTANTS.MODULE_NAME, "closeTokenOnSubmit") === false){
                 ui.notifications.notify(game.i18n.localize("COMMUNITYLIGHTING.notif.tokenUpdated"));
             }
         }

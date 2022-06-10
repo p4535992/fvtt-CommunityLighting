@@ -1,13 +1,13 @@
-class CLAudioReactor {
+export class CLAudioReactor {
     // 0 = mono, 1 = left, 2 = right
-    static analyser = [];
+    static analyser:any[] = [];
     static sampleBuffer;
 
     static embigenner;
 
-    static soundboardAnalyser = [];
+    static soundboardAnalyser:any[] = [];
     static soundboardSampleBuffer;
-    
+
     static freqPowers = [
         [],
         [],
@@ -23,19 +23,19 @@ class CLAudioReactor {
 
 
     static startAnalysis() {
-        var analysisStartupInterval = setInterval(() => {
+        const analysisStartupInterval = setInterval(() => {
             if(game.audio.context){
             if (!CLAudioReactor.soundboardAnalyser[0]) {
                 CLAudioReactor.initSoundboardAnalyser();
             }
-    
+
             if (!CLAudioReactor.analyser[0]) {
                 CLAudioReactor.initAnalyser();
             }
             clearInterval(analysisStartupInterval)
 
             let runs = 0;
-            canvas.app.ticker.add(() => {
+            canvas.app?.ticker.add(() => {
                 if(!game.audio.context){
                     CLAudioReactor.initAnalyser();
                     CLAudioReactor.initSoundboardAnalyser();
@@ -52,7 +52,8 @@ class CLAudioReactor {
                 }
                 if(runs == 0){
                 // for (let i of [0, 1, 2]){
-                for (let i of [0]){
+                for (const i of [0]){
+                    //@ts-ignore
                     CLAudioReactor.analyser[i].getByteFrequencyData(CLAudioReactor.sampleBuffer[i])
                     if(CLAudioReactor.soundboardAnalyser[i]){
                         CLAudioReactor.soundboardAnalyser[i].getByteFrequencyData(CLAudioReactor.soundboardSampleBuffer[i])
@@ -69,29 +70,39 @@ class CLAudioReactor {
     static calculateFreqPowers() {
         // TODO Implement stereo channels
         // for (let i of [0, 1, 2]) {
-        for (let i of [0]){
+        for (const i of [0]){
+            //@ts-ignore
             CLAudioReactor.freqPowers[i][0] = CLAudioReactor.getEnergy("bass", 0, i);
+            //@ts-ignore
             CLAudioReactor.freqPowers[i][1] = CLAudioReactor.getEnergy("mid", 0, i);
+            //@ts-ignore
             CLAudioReactor.freqPowers[i][2] = CLAudioReactor.getEnergy("treble", 0, i);
             if(CLAudioReactor.soundboardAnalyser[i]){
+                //@ts-ignore
                 CLAudioReactor.soundboardFreqPowers[i][0] = CLAudioReactor.getEnergy("bass", 0, i, true);
+                //@ts-ignore
                 CLAudioReactor.soundboardFreqPowers[i][1] = CLAudioReactor.getEnergy("mid", 0, i, true);
+                //@ts-ignore
                 CLAudioReactor.soundboardFreqPowers[i][2] = CLAudioReactor.getEnergy("treble", 0, i, true);
             }
         }
     }
 
     static _freqToBin(freq, rounding = 'round', soundBoard = false) {
-        let analyser = soundBoard?CLAudioReactor.soundboardAnalyser[0]:CLAudioReactor.analyser[0];
+        const analyser = soundBoard?CLAudioReactor.soundboardAnalyser[0]:CLAudioReactor.analyser[0];
         const max = analyser.frequencyBinCount - 1,
-            bin = Math[rounding](freq * analyser.fftSize / game.audio.context.sampleRate);
+            bin = Math[rounding](freq * analyser.fftSize / <number>game.audio.context?.sampleRate);
 
         return bin < max ? bin : max;
     }
 
+    static getAudioPeak(source, currentPeak, smoothing, minIncrease, maxDecrease, soundBoard){
+      // TODO
+    }
+
     static getEnergy(startFreq, endFreq, channel = 0, soundBoard = false) {
 
-        var freqString = startFreq;
+        const freqString = startFreq;
         // if startFreq is a string, check for presets
         if (startFreq != (startFreq | 0)) {
             // if ( startFreq == 'peak' )
@@ -114,8 +125,8 @@ class CLAudioReactor {
         const startBin = CLAudioReactor._freqToBin(startFreq, 'round', soundBoard),
             endBin = endFreq ? CLAudioReactor._freqToBin(endFreq, 'round', soundBoard) : startBin;
 
-        let buffer = soundBoard?CLAudioReactor.soundboardSampleBuffer:CLAudioReactor.sampleBuffer;
-        let analysers = soundBoard?CLAudioReactor.soundboardAnalyser:CLAudioReactor.analyser;
+        const buffer = soundBoard?CLAudioReactor.soundboardSampleBuffer:CLAudioReactor.sampleBuffer;
+        const analysers = soundBoard?CLAudioReactor.soundboardAnalyser:CLAudioReactor.analyser;
         let energy = 0;
         let clipped = false;
         for (let i = startBin; i <= endBin; i++) {
@@ -139,6 +150,7 @@ class CLAudioReactor {
         //     return Math.pow(CLAudioReactor.freqPowers[channel][index] || 0, 6) * 4;
         // }
         // }
+        //@ts-ignore
         return soundBoard?CLAudioReactor.soundboardFreqPowers[channel][index] || 0:CLAudioReactor.freqPowers[channel][index] || 0;
     }
 
@@ -150,27 +162,27 @@ class CLAudioReactor {
 
     static initAnalyser(){
         if(game.audio.context){
-            var audioCtx = game.audio.context;
+            const audioCtx = game.audio.context;
 
             const splitter = audioCtx.createChannelSplitter(2);
             const merger = audioCtx.createChannelMerger(2);
             CLAudioReactor.embigenner = audioCtx.createGain();
 
             // for (let i of [0, 1, 2]) {
-            for (let i of [0]) {
+            for (const i of [0]) {
                 CLAudioReactor.analyser[i] = audioCtx.createAnalyser();
                 CLAudioReactor.analyser[i].fftSize = 512;
                 CLAudioReactor.analyser[i].maxDecibels = -25;
                 CLAudioReactor.analyser[i].smoothingTimeConstant = 0.8;
             }
-            
+
             // CLAudioReactor.embigenner.connect(splitter);
 
             // for (let i of [1, 2]) {
             //     splitter.connect(CLAudioReactor.analyser[i], i - 1);
             //     CLAudioReactor.analyser[i].connect(merger, 0, i - 1);
             // }
-            
+
             // merger.connect(CLAudioReactor.analyser[0]);
 
             // REMOVE and uncomment above for stereo
@@ -187,16 +199,18 @@ class CLAudioReactor {
     }
 
     static initSoundboardAnalyser(){
+        //@ts-ignore
         if(game.audio.soundboardGain){
-            var audioCtx = game.audio.context;
+            const audioCtx = game.audio.context;
             // for (let i of [0, 1, 2]) {
-            for (let i of [0]) {
-                CLAudioReactor.soundboardAnalyser[i] = audioCtx.createAnalyser();
+            for (const i of [0]) {
+                CLAudioReactor.soundboardAnalyser[i] = audioCtx?.createAnalyser();
                 CLAudioReactor.soundboardAnalyser[i].fftSize = 512;
                 CLAudioReactor.soundboardAnalyser[i].maxDecibels = -25;
                 CLAudioReactor.soundboardAnalyser[i].smoothingTimeConstant = 0.8;
             }
-            game.audio.soundboardGain.connect(CLAudioReactor.soundboardAnalyser[0]);
+            //@ts-ignore
+            game.audio.soundboardGain?.connect(CLAudioReactor.soundboardAnalyser[0]);
             CLAudioReactor.soundboardSampleBuffer =[new Uint8Array(CLAudioReactor.soundboardAnalyser[0].frequencyBinCount),
             new Uint8Array(CLAudioReactor.soundboardAnalyser[0].frequencyBinCount),
             new Uint8Array(CLAudioReactor.soundboardAnalyser[0].frequencyBinCount)
@@ -205,9 +219,10 @@ class CLAudioReactor {
     }
 
     static attemptEmbiggen = (sound, retryCount = 0)=>{
-        if(canvas.sounds.placeables.filter((soundPlaceable)=>{
-            return soundPlaceable.sound.id === sound.id;
-        }).length > 0){
+        const sounds = <AmbientSound[]>canvas.sounds?.placeables.filter((soundPlaceable)=>{
+            return soundPlaceable.sound?.id === sound.id;
+        });
+        if(sounds && sounds.length > 0){
             // console.log("PLACEABLE");
             return;
         }
@@ -236,7 +251,7 @@ class CLAudioReactor {
             sound.container.sourceNode._clConnected = true;
             console.log("CommunityLightingAudio: Connecting EMBIGGENER");
         } else if (sound.container.sourceNode._clConnected !== true) {
-            setTimeout(()=>{attemptEmbiggen(sound, ++retryCount);}, 500);
-        } 
+            setTimeout(()=>{CLAudioReactor.attemptEmbiggen(sound, ++retryCount);}, 500);
+        }
     }
 }
