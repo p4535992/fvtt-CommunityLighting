@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "conditional-visibility",
-  "title": "Conditional Visibility",
-  "description": "Hide tokens from some players, but not others, based on the senses the players have. Uses unknown, newspaper, and foggy icons made by <a href=\"https://www.flaticon.com/authors/freepik\" title=\"Freepik\">Freepik</a>, from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\"> www.flaticon.com</a>. Moon icon made by <a href=\"https://www.flaticon.com/authors/iconixar\" title=\"iconixar\">iconixar</a> from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\"> www.flaticon.com</a>",
-  "version": "0.6.12",
+  "name": "CommunityLighting",
+  "title": "CommunityLighting by Blitz",
+  "description": "Community Lighting Module for ambient light animations! Add your lights via GitHub PR, or just use the lights added by others in your games!",
+  "version": "0.4.7",
   "scripts": {
     "package": "gulp package",
     "build": "gulp build && gulp link",

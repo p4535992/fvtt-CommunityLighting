@@ -3,10 +3,48 @@
   "title": "CommunityLighting by Blitz",
   "description": "Community Lighting Module for ambient light animations! Add your lights via GitHub PR, or just use the lights added by others in your games!",
   "version": "0.4.7",
-  "author": "Blitzkraig",
-  "scripts": ["./communitylighting.js", "./modules/communitylightingsettings.js", "./modules/animationmanager.js", "./modules/custompropertymanager.js", "./modules/animationhelpers.js", "./modules/audioreact.js", "./modules/animations.js", "./modules/preanimations.js", "./modules/shaders.js", "./modules/monkeypatcher.js", "./dependencies/chroma.min.js", "./dependencies/pixi-filters.js", "greensock/dist/gsap.min.js"],
-  "styles": [],
-  "packs": [],
+  "author": "Blitzkraig, p4535992",
+  "authors": [
+    { "name": "Blitzkraig" },
+    {
+      "name": "p4535992",
+      "url": "https://github.com/p4535992",
+      "discord": "",
+      "twitter": "",
+      "patreon": "",
+      "github": "p4535992",
+      "ko-fi": "",
+      "reddit": "",
+      "email": ""
+    }
+  ],
+  "type": "module",
+  "socket": true,
+  "includes": [
+    "./assets/**",
+    "./lang/**",
+    "./scripts/**",
+    "./styles/**",
+    "./templates/**",
+    "./module.json",
+    "./README.md",
+    "./icons/**",
+    "./packs/**"
+  ],
+  "media": [
+    {
+      "type": "icon",
+      "location": ""
+    },
+    {
+      "type": "cover",
+      "location": ""
+    },
+    {
+      "type": "screenshot",
+      "location": ""
+    }
+  ],
   "languages": [
     {
       "lang": "en",
@@ -24,9 +62,31 @@
       "path": "lang/es.json"
     }
   ],
-  "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.7",
-  "url": "https://github.com/BlitzKraig/fvtt-CommunityLighting",
-  "manifest": "https://raw.githubusercontent.com/BlitzKraig/fvtt-CommunityLighting/master/module.json",
-  "download": "https://github.com/BlitzKraig/fvtt-CommunityLighting/releases/download/latest/communitylighting-release.zip"
+  "scripts": ["./dependencies/chroma.min.js", "./dependencies/pixi-filters.js", "greensock/dist/gsap.min.js"],
+  "esmodules": ["main.js"],
+  "styles": [],
+  "packs": [],
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "9",
+  "manifestPlusVersion": "1.2.0",
+  "url": "https://github.com/p4535992/fvtt-CommunityLighting",
+  "manifest": "https://github.com/p4535992/fvtt-CommunityLighting/releases/latest/download/module.json",
+  "download": "https://github.com/p4535992/fvtt-CommunityLighting/releases/latest/download/module.zip",
+  "readme": "https://github.com/p4535992/fvtt-CommunityLighting/blob/v0.6.12/README.md",
+  "changelog": "https://github.com/p4535992/fvtt-CommunityLighting/blob/v0.6.12/changelog.md",
+  "bugs": "https://github.com/p4535992/fvtt-CommunityLighting/issues",
+  "allowBugReporter": true,
+  "dependencies": [
+    {
+      "name": "lib-wrapper"
+    },
+    {
+      "name": "socketlib"
+    }
+  ],
+  "flags": {
+    "manifestPlusVersion": "1.2.0",
+    "allowBugReporter": true,
+    "conflicts": []
+  }
 }
