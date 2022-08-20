@@ -1,6 +1,5 @@
 import CONSTANTS from './constants';
 
-
 const API = {
   //
 };

@@ -14,6 +14,7 @@ import CONSTANTS from './module/constants';
 import { dialogWarning, error, log } from './module/lib/lib';
 import { initHooks, readyHooks, setupHooks } from './module/module';
 import type API from './module/api';
+import { registerSettings } from './module/settings';
 
 /* ------------------------------------ */
 /* Initialize module					*/

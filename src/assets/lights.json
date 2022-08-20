@@ -1,825 +1,824 @@
 {
-    "Blitz": {
-        "discord": "Blitz#6797",
-        "links": {
-            "github": "https://github.com/BlitzKraig",
-            "twitter": "",
-            "youtube": ""
-        },
-        "lights": [
-            {
-                "translationName": "shadertest",
-                "name": "Custom Shader Example",
-                "animationFunction": "blitzShaderTest",
-                "shaders": {
-                    "coloration": "CLCustomWaveColorationShader",
-                    "illumination": "CLCustomWaveIlluminationShader"
-                },
-                "description": "A pulsing light using a custom shader",
-                "intensityDescription": "Controls how extreme the fade will be",
-                "speedDescription": "Controls how quickly the light will fade in and out"
-            },
-            {
-                "translationName": "fade",
-                "name": "Fader",
-                "animationFunction": "blitzFadeSimple",
-                "description": "A fading light",
-                "intensityDescription": "Controls how extreme the fade will be",
-                "speedDescription": "Controls how quickly the light will fade in and out"
-            },
-            {
-                "translationName": "lightning",
-                "name": "Lightning (Experimental!)",
-                "animationFunction": "blitzLightningSimple",
-                "description": "A basic Lightning strike, randomly flashes on for a short time",
-                "intensityDescription": "Controls how bright the flash will be",
-                "speedDescription": "Controls how often the lightning will strike"
-            },
-            {
-                "translationName": "electricFault",
-                "name": "Electric Fault",
-                "animationFunction": "blitzElectricFault",
-                "description": "A glitched electrical light. Dims slightly at random",
-                "intensityDescription": "Controls how much dimmer the light will get",
-                "speedDescription": "Controls how often the fault will occur"
-            },
-            {
-                "translationName": "flash",
-                "name": "Simple Flash",
-                "animationFunction": "blitzSimpleFlash",
-                "description": "A simple flashing light",
-                "intensityDescription": "Controls how dim the light will be when it flashes off",
-                "speedDescription": "Controls how often the light will flash"
-            },
-            {
-                "translationName": "rgbflash",
-                "name": "RGB Flash",
-                "animationFunction": "blitzRGBFlash",
-                "description": "A simple flashing light, cycling between Red, Green and Blue",
-                "intensityDescription": "Controls how dim the light will be when it flashes off",
-                "speedDescription": "Controls how often the light will flash"
-            },
-            {
-                "translationName": "policeflash",
-                "name": "Police Flash",
-                "animationFunction": "blitzPoliceFlash",
-                "description": "A simple flashing light, cycling between Red, and Blue, mimicking police lights",
-                "intensityDescription": "Controls how dim the light will be when it flashes off",
-                "speedDescription": "Controls how often the light will flash"
-            },
-            {
-                "translationName": "fadeMusic",
-                "name": "Audio Fade",
-                "animationFunction": "blitzFadeMusic",
-                "description": "An audio-reactive fading light",
-                "intensityDescription": "Controls how extreme the fade will be",
-                "speedDescription": "Controls smoothing on peak changes",
-                "customProperties": [
-                    {
-                        "title": "Band",
-                        "varName": "listeningBand",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Low",
-                                "value": "low"
-                            },
-                            {
-                                "label": "Mid",
-                                "value": "mid"
-                            },
-                            {
-                                "label": "High",
-                                "value": "high"
-                            }
-                        ],
-                        "default": "mid"
-                    },
-                    {
-                        "title": "Source",
-                        "varName": "gainNode",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Master",
-                                "value": "master"
-                            },
-                            {
-                                "label": "SoundBoard by Blitz (requires module)",
-                                "value": "soundboard"
-                            }
-                        ],
-                        "default": "master"
-                    },
-                    {
-                        "title": "Exponent",
-                        "description": "Simple easing. Increase if the light is too reactive.",
-                        "varName": "exponent",
-                        "type": "range",
-                        "min": 1,
-                        "max": 12,
-                        "step": 1,
-                        "default": 1
-                    }
-                ]
-            },
-            {
-                "translationName": "pulseMusic",
-                "name": "Audio Pulse",
-                "animationFunction": "blitzPulseMusic",
-                "description": "An audio-reactive pulsing light",
-                "intensityDescription": "Controls how far the light will animate from the center value",
-                "speedDescription": "Controls smoothing on peak changes",
-                "customProperties": [
-                    {
-                        "title": "Band",
-                        "varName": "listeningBand",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Low",
-                                "value": "low"
-                            },
-                            {
-                                "label": "Mid",
-                                "value": "mid"
-                            },
-                            {
-                                "label": "High",
-                                "value": "high"
-                            }
-                        ],
-                        "default": "mid"
-                    },
-                    {
-                        "title": "Source",
-                        "varName": "gainNode",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Master",
-                                "value": "master"
-                            },
-                            {
-                                "label": "SoundBoard by Blitz (requires module)",
-                                "value": "soundboard"
-                            }
-                        ],
-                        "default": "master"
-                    },
-                    {
-                        "title": "Exponent",
-                        "description": "Simple easing. Increase if the light is too reactive.",
-                        "varName": "exponent",
-                        "type": "range",
-                        "min": 1,
-                        "max": 12,
-                        "step": 1,
-                        "default": 1
-                    }
-                ]
-            },
-            {
-                "translationName": "pulseMusicColorshift",
-                "name": "Audio Pulse Colorshift",
-                "animationFunction": "blitzPulseMusicColorshift",
-                "description": "An audio-reactive pulsing light that shifts between three colors",
-                "intensityDescription": "Controls how far the light will animate from the center value",
-                "speedDescription": "Controls smoothing on peak changes",
-                "customProperties": [
-                    {
-                        "title": "Secondary Color",
-                        "varName": "secondaryColor",
-                        "type": "color",
-                        "default": "#00ff00"
-                    },
-                    {
-                        "title": "Tertiary Color",
-                        "varName": "tertiaryColor",
-                        "type": "color",
-                        "default": "#0000ff"
-                    },
-                    {
-                        "title": "Color Speed",
-                        "varName": "colorSpeed",
-                        "type": "range",
-                        "min": 1,
-                        "max": 10,
-                        "step": 1,
-                        "default": 5
-                    },
-                    {
-                        "title": "Band",
-                        "varName": "listeningBand",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Low",
-                                "value": "low"
-                            },
-                            {
-                                "label": "Mid",
-                                "value": "mid"
-                            },
-                            {
-                                "label": "High",
-                                "value": "high"
-                            }
-                        ],
-                        "default": "mid"
-                    },
-                    {
-                        "title": "Source",
-                        "varName": "gainNode",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Master",
-                                "value": "master"
-                            },
-                            {
-                                "label": "SoundBoard by Blitz (requires module)",
-                                "value": "soundboard"
-                            }
-                        ],
-                        "default": "master"
-                    },
-                    {
-                        "title": "Exponent",
-                        "description": "Simple easing. Increase if the light is too reactive.",
-                        "varName": "exponent",
-                        "type": "range",
-                        "min": 1,
-                        "max": 12,
-                        "step": 1,
-                        "default": 1
-                    }
-                ]
-            },
-            {
-                "translationName": "blurStatic",
-                "name": "Static Blur",
-                "animationFunction": "blitzStaticBlur",
-                "description": "A static, blurrable light",
-                "intensityDescription": "Not used",
-                "speedDescription": "Not used",
-                "customProperties": [
-                    {
-                        "title": "Blur Strength",
-                        "varName": "blurStrength",
-                        "type": "range",
-                        "min": 1,
-                        "max": 50,
-                        "step": 1,
-                        "default": 20
-                    }
-                ]
-            },
-            {
-                "translationName": "torch",
-                "name": "Alternate Torch",
-                "animationFunction": "blitzTorch",
-                "description": "A deeper, alternative version of the torch, supporting Blur and flickering",
-                "shaders": {
-                    "illumination": "CLTorchIlluminationShader"
-                },
-                "customProperties": [
-                    {
-                        "title": "Secondary Color",
-                        "varName": "secondaryColor",
-                        "type": "color",
-                        "default": "#f0ba5c"
-                    },
-                    {
-                        "title": "Ratio Damper",
-                        "description": "Reduce certain values by this factor. Useful if you have a large dim radius, but small bright radius.",
-                        "varName": "ratioDamper",
-                        "type": "range",
-                        "min": 1,
-                        "max": 50,
-                        "step": 1,
-                        "default": 1
-                    },
-                    {
-                        "title": "Blur Strength",
-                        "varName": "blurStrength",
-                        "type": "range",
-                        "min": 1,
-                        "max": 50,
-                        "step": 1,
-                        "default": 1
-                    },
-                    {
-                        "title": "Flicker Movement",
-                        "description": "Enable to cause the center circle to move around as it flickers",
-                        "varName": "alterTranslation",
-                        "type": "checkbox",
-                        "default": true
-                    },
-                    {
-                        "title": "Flicker Alpha",
-                        "description": "Enable to flicker the opacity of the torch",
-                        "varName": "alterAlpha",
-                        "type": "checkbox",
-                        "default": true
-                    }
-                ]
-            },
-            {
-                "name": "Grid Force-Field Colorshift",
-                "animationFunction": "blitzForceFieldExtension",
-                "shaders": {
-                    "coloration": "CLForceGridColorationShader"
-                },
-                "description": "A color-changing pulsating grid force-field, based on Grid Force-Field by SecretFire",
-                "intensityDescription": "Controls the pulsating power",
-                "speedDescription": "Controls how quickly the grid is pulsating",
-                "customPropertiesComment": "!AUTHORS! All possible property types are provided below for demonstration purposes.",
-                "customProperties": [
-                    {
-                        "title": "Secondary Color",
-                        "description": "The light will morph between the initial color and this color",
-                        "varName": "secondaryColor",
-                        "type": "color",
-                        "default": "#00ff00"
-                    },
-                    {
-                        "title": "Use Color Speed",
-                        "description": "Enable this to separate the speed of the color change from the speed of the rest of the animation",
-                        "varName": "useColorSpeed",
-                        "type": "checkbox",
-                        "default": true
-                    },
-                    {
-                        "title": "Color Speed",
-                        "description": "How fast the color will change. Only if Use Color Speed is enabled.",
-                        "varName": "colorSpeed",
-                        "type": "range",
-                        "min": 1,
-                        "max": 10,
-                        "step": 1,
-                        "default": 5
-                    },
-                    {
-                        "title": "Color Speed Multiplier",
-                        "description": "Multiply the Color Speed by this value. Only if Use Color Speed is enabled.",
-                        "varName": "colorSpeedMult",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Quarter Speed",
-                                "value": 0.25
-                            },
-                            {
-                                "label": "Half Speed",
-                                "value": 0.5
-                            },
-                            {
-                                "label": "Full Speed",
-                                "value": 1
-                            },
-                            {
-                                "label": "Double Speed",
-                                "value": 2
-                            },
-                            {
-                                "label": "Triple Speed",
-                                "value": 3
-                            }
-                        ],
-                        "default": 1
-                    }
-                ]
-            },
-            {
-                "translationName": "polyLight",
-                "name": "Poly Light",
-                "animationFunction": "blitzPolyLight",
-                "shaders": {
-                    "illumination": "CLPolyIlluminationShader"
-                },
-                "description": "A simple light with a shaped illumination shader.",
-                "intensityDescription": "Control the intensity of the torch flicker (Requires Should Flicker). Control how much the shader morphs between two polygons.",
-                "speedDescription": "Control how fast the animation flickers (Requires Should Flicker). Control how quickly the shader morphs between polygons.", 
-                "customProperties": [
-                    {
-                        "title": "Sides",
-                        "description": "Number of polygon sides to start with",
-                        "varName": "shapeSides",
-                        "type": "range",
-                        "min": 1,
-                        "max": 20,
-                        "step": 1,
-                        "default": 4
-                    },
-                    {
-                        "title": "Animate Sides To",
-                        "description": "Number of polygon sides to animate to. Set to the same value as Sides to disable this animation.",
-                        "varName": "shapeSidesTo",
-                        "type": "range",
-                        "min": 1,
-                        "max": 20,
-                        "step": 1,
-                        "default": 4
-                    },
-                    {
-                        "title": "Inner Blur",
-                        "varName": "innerBlur",
-                        "type": "range",
-                        "min": 0.01,
-                        "max": 0.5,
-                        "step": 0.01,
-                        "default": 0.1
-                    },
-                    {
-                        "title": "Outer Blur",
-                        "varName": "outerBlur",
-                        "type": "range",
-                        "min": 0.01,
-                        "max": 0.5,
-                        "step": 0.01,
-                        "default": 0.1
-                    },
-                    {
-                        "title": "Scale",
-                        "description": "Change the size of the light. Useful if the polygon is clipped by the light radius.",
-                        "varName": "scale",
-                        "type": "range",
-                        "min": 0.1,
-                        "max": 2.0,
-                        "step": 0.1,
-                        "default": 1.0
-                    },
-                    {
-                        "title": "Should Flicker Scale",
-                        "description": "Torch-like flicker the size of the light.",
-                        "varName": "shouldFlicker",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Should Flicker Alpha",
-                        "description": "Torch-like flicker the lights opacity",
-                        "varName": "shouldFlickerAlpha",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Should Flicker Wiggle",
-                        "description": "Torch-like flicker, wiggling the lights edges",
-                        "varName": "shouldFlickerTranslate",
-                        "type": "checkbox",
-                        "default": false
-                    }
-                ]
-            },
-            {
-                "translationName": "customFire",
-                "name": "Custom Fire",
-                "animationFunction": "customFire",
-                "description": "Custom Shader Fire",
-                "intensityDescription": "Controls flame intensity",
-                "speedDescription": "Controls fire speed",
-                "shaders": {
-                    "illumination": "CLFireIlluminationShader",
-                    "coloration": "CLFireColorationShader"
-                },
-                "customProperties": [
-                    {
-                        "title": "Cast Light",
-                        "description": "Enable to cast circular light fields.",
-                        "varName": "castLight",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Blur Strength",
-                        "varName": "smoothness",
-                        "description": "Strength of blur on the light circles only",
-                        "type": "range",
-                        "min": 1,
-                        "max": 50,
-                        "step": 1,
-                        "default": 1
-                    },
-                    {
-                        "title": "Flame Size",
-                        "description": "Use this to detemine how much of the light should be taken up by the flame.",
-                        "varName": "flameRatio",
-                        "type": "range",
-                        "min": 0.01,
-                        "max": 1.0,
-                        "step": 0.01,
-                        "default": 0.5
-                    },
-                    {
-                        "title": "Cast-light Speed",
-                        "description": "Controls the speed of the circle light animation only.",
-                        "varName": "circleSpeed",
-                        "type": "range",
-                        "min": 1,
-                        "max": 10,
-                        "step": 1,
-                        "default": 5
-                    },
-                    {
-                        "title": "Cast-light Intensity",
-                        "description": "Controls the intensity of the circle light animation only.",
-                        "varName": "circleIntensity",
-                        "type": "range",
-                        "min": 1,
-                        "max": 10,
-                        "step": 1,
-                        "default": 5
-                    },
-                    {
-                        "title": "Should Flicker Scale",
-                        "description": "Torch-like flicker the size of the light circles.",
-                        "varName": "shouldFlicker",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Should Flicker Alpha",
-                        "description": "Torch-like flicker the light circle opacity",
-                        "varName": "shouldFlickerAlpha",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Should Flicker Translate",
-                        "description": "Torch-like flicker the bright circles position",
-                        "varName": "shouldFlickerTranslate",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Animated Enable",
-                        "description": "Experimental. Short animation when the light is enabled.",
-                        "varName": "shouldAnimateOn",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Animated Enable Speed",
-                        "description": "Controls how quickly the light switches on",
-                        "varName": "animateOnSpeed",
-                        "type": "range",
-                        "min": 1,
-                        "max": 10,
-                        "step": 1,
-                        "default": 5
-                    },
-                    {
-                        "title": "Audio Reactivity",
-                        "description": "Enable to allow the light to respond to audio",
-                        "varName": "audioReactive",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Band",
-                        "varName": "listeningBand",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Low",
-                                "value": "low"
-                            },
-                            {
-                                "label": "Mid",
-                                "value": "mid"
-                            },
-                            {
-                                "label": "High",
-                                "value": "high"
-                            }
-                        ],
-                        "default": "mid"
-                    },
-                    {
-                        "title": "Source",
-                        "varName": "gainNode",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Master",
-                                "value": "master"
-                            },
-                            {
-                                "label": "SoundBoard by Blitz (requires module)",
-                                "value": "soundboard"
-                            }
-                        ],
-                        "default": "master"
-                    },
-                    {
-                        "title": "Exponent",
-                        "description": "Simple easing. Increase if the light is too reactive.",
-                        "varName": "exponent",
-                        "type": "range",
-                        "min": 1,
-                        "max": 12,
-                        "step": 1,
-                        "default": 1
-                    }
-                ]
-            }
-        ]
+  "Blitz": {
+    "discord": "Blitz#6797",
+    "links": {
+      "github": "https://github.com/BlitzKraig",
+      "twitter": "",
+      "youtube": ""
     },
-    "SecretFire": {
-        "discord": "SecretFire#4843",
-        "links": {
-            "github": "https://github.com/Feu-Secret",
-            "twitter": "",
-            "youtube": ""
+    "lights": [
+      {
+        "translationName": "shadertest",
+        "name": "Custom Shader Example",
+        "animationFunction": "blitzShaderTest",
+        "shaders": {
+          "coloration": "CLCustomWaveColorationShader",
+          "illumination": "CLCustomWaveIlluminationShader"
         },
-        "lights": [
-            {
-                "translationName": "gridForceField",
-                "name": "Grid Force-Field",
-                "animationFunction": "secretFireAnimateTimeForceColor",
-                "shaders": {
-                    "coloration": "CLForceGridColorationShader"
-                },
-                "description": "A pulsating grid force-field",
-                "intensityDescription": "Controls the pulsating power",
-                "speedDescription": "Controls how quickly the grid is pulsating"
-            },
-            {
-                "translationName": "smokePatch",
-                "name": "Smoke Patch",
-                "animationFunction": "secretFireAnimateTimeForceColor",
-                "shaders": {
-                    "coloration": "CLSmokePatchColorationShader",
-                    "illumination": "CLSmokePatchIlluminationShader"
-                },
-                "description": "A billow of smoke",
-                "intensityDescription": "Controls the intensity of the smoke",
-                "speedDescription": "Controls how quickly the smoke swirls"
-            },
-            {
-                "translationName": "starLight",
-                "name": "Star Light",
-                "animationFunction": "secretFireAnimateStarLight",
-                "shaders": {
-                    "coloration": "CLStarLightColorationShader",
-                    "illumination": "CLSmoothTransitionIlluminationShader"
-                },
-                "description": "A shining star light",
-                "intensityDescription": "Controls the intensity of the star light",
-                "speedDescription": "Controls how quickly the star shines",
-                "customPropertiesComment": "test",
-                "customProperties": [
-                    {
-                        "title": "Secondary Color",
-                        "varName": "secondaryColor",
-                        "type": "color",
-                        "default": "#00ff00"
-                    }
-                ]
-            },
-            {
-                "translationName": "starLightMusic",
-                "name": "Star Light Disco",
-                "animationFunction": "secretFireAnimateStarLightMusic",
-                "shaders": {
-                    "coloration": "CLStarLightColorationShader",
-                    "illumination": "CLSmoothTransitionIlluminationShader"
-                },
-                "description": "An audio-reactive disco star light",
-                "intensityDescription": "Controls the intensity of the rays shifting according to music",
-                "speedDescription": "Controls how quickly the star shines",
-                "customPropertiesComment": "test",
-                "customProperties": [
-                    {
-                        "title": "Secondary Color",
-                        "varName": "secondaryColor",
-                        "type": "color",
-                        "default": "#00ff00"
-                    },
-                    {
-                        "title": "Band",
-                        "varName": "listeningBand",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Low",
-                                "value": "low"
-                            },
-                            {
-                                "label": "Mid",
-                                "value": "mid"
-                            },
-                            {
-                                "label": "High",
-                                "value": "high"
-                            }
-                        ],
-                        "default": "mid"
-                    },
-                    {
-                        "title": "Source",
-                        "varName": "gainNode",
-                        "type": "select",
-                        "options": [
-                            {
-                                "label": "Master",
-                                "value": "master"
-                            },
-                            {
-                                "label": "SoundBoard by Blitz (requires module)",
-                                "value": "soundboard"
-                            }
-                        ],
-                        "default": "master"
-                    },
-                    {
-                        "title": "Exponent",
-                        "description": "Simple easing. Increase if the light is too reactive.",
-                        "varName": "exponent",
-                        "type": "range",
-                        "min": 1,
-                        "max": 12,
-                        "step": 1,
-                        "default": 1
-                    }
-                ]
-            }
+        "description": "A pulsing light using a custom shader",
+        "intensityDescription": "Controls how extreme the fade will be",
+        "speedDescription": "Controls how quickly the light will fade in and out"
+      },
+      {
+        "translationName": "fade",
+        "name": "Fader",
+        "animationFunction": "blitzFadeSimple",
+        "description": "A fading light",
+        "intensityDescription": "Controls how extreme the fade will be",
+        "speedDescription": "Controls how quickly the light will fade in and out"
+      },
+      {
+        "translationName": "lightning",
+        "name": "Lightning (Experimental!)",
+        "animationFunction": "blitzLightningSimple",
+        "description": "A basic Lightning strike, randomly flashes on for a short time",
+        "intensityDescription": "Controls how bright the flash will be",
+        "speedDescription": "Controls how often the lightning will strike"
+      },
+      {
+        "translationName": "electricFault",
+        "name": "Electric Fault",
+        "animationFunction": "blitzElectricFault",
+        "description": "A glitched electrical light. Dims slightly at random",
+        "intensityDescription": "Controls how much dimmer the light will get",
+        "speedDescription": "Controls how often the fault will occur"
+      },
+      {
+        "translationName": "flash",
+        "name": "Simple Flash",
+        "animationFunction": "blitzSimpleFlash",
+        "description": "A simple flashing light",
+        "intensityDescription": "Controls how dim the light will be when it flashes off",
+        "speedDescription": "Controls how often the light will flash"
+      },
+      {
+        "translationName": "rgbflash",
+        "name": "RGB Flash",
+        "animationFunction": "blitzRGBFlash",
+        "description": "A simple flashing light, cycling between Red, Green and Blue",
+        "intensityDescription": "Controls how dim the light will be when it flashes off",
+        "speedDescription": "Controls how often the light will flash"
+      },
+      {
+        "translationName": "policeflash",
+        "name": "Police Flash",
+        "animationFunction": "blitzPoliceFlash",
+        "description": "A simple flashing light, cycling between Red, and Blue, mimicking police lights",
+        "intensityDescription": "Controls how dim the light will be when it flashes off",
+        "speedDescription": "Controls how often the light will flash"
+      },
+      {
+        "translationName": "fadeMusic",
+        "name": "Audio Fade",
+        "animationFunction": "blitzFadeMusic",
+        "description": "An audio-reactive fading light",
+        "intensityDescription": "Controls how extreme the fade will be",
+        "speedDescription": "Controls smoothing on peak changes",
+        "customProperties": [
+          {
+            "title": "Band",
+            "varName": "listeningBand",
+            "type": "select",
+            "options": [
+              {
+                "label": "Low",
+                "value": "low"
+              },
+              {
+                "label": "Mid",
+                "value": "mid"
+              },
+              {
+                "label": "High",
+                "value": "high"
+              }
+            ],
+            "default": "mid"
+          },
+          {
+            "title": "Source",
+            "varName": "gainNode",
+            "type": "select",
+            "options": [
+              {
+                "label": "Master",
+                "value": "master"
+              },
+              {
+                "label": "SoundBoard by Blitz (requires module)",
+                "value": "soundboard"
+              }
+            ],
+            "default": "master"
+          },
+          {
+            "title": "Exponent",
+            "description": "Simple easing. Increase if the light is too reactive.",
+            "varName": "exponent",
+            "type": "range",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "default": 1
+          }
         ]
+      },
+      {
+        "translationName": "pulseMusic",
+        "name": "Audio Pulse",
+        "animationFunction": "blitzPulseMusic",
+        "description": "An audio-reactive pulsing light",
+        "intensityDescription": "Controls how far the light will animate from the center value",
+        "speedDescription": "Controls smoothing on peak changes",
+        "customProperties": [
+          {
+            "title": "Band",
+            "varName": "listeningBand",
+            "type": "select",
+            "options": [
+              {
+                "label": "Low",
+                "value": "low"
+              },
+              {
+                "label": "Mid",
+                "value": "mid"
+              },
+              {
+                "label": "High",
+                "value": "high"
+              }
+            ],
+            "default": "mid"
+          },
+          {
+            "title": "Source",
+            "varName": "gainNode",
+            "type": "select",
+            "options": [
+              {
+                "label": "Master",
+                "value": "master"
+              },
+              {
+                "label": "SoundBoard by Blitz (requires module)",
+                "value": "soundboard"
+              }
+            ],
+            "default": "master"
+          },
+          {
+            "title": "Exponent",
+            "description": "Simple easing. Increase if the light is too reactive.",
+            "varName": "exponent",
+            "type": "range",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "default": 1
+          }
+        ]
+      },
+      {
+        "translationName": "pulseMusicColorshift",
+        "name": "Audio Pulse Colorshift",
+        "animationFunction": "blitzPulseMusicColorshift",
+        "description": "An audio-reactive pulsing light that shifts between three colors",
+        "intensityDescription": "Controls how far the light will animate from the center value",
+        "speedDescription": "Controls smoothing on peak changes",
+        "customProperties": [
+          {
+            "title": "Secondary Color",
+            "varName": "secondaryColor",
+            "type": "color",
+            "default": "#00ff00"
+          },
+          {
+            "title": "Tertiary Color",
+            "varName": "tertiaryColor",
+            "type": "color",
+            "default": "#0000ff"
+          },
+          {
+            "title": "Color Speed",
+            "varName": "colorSpeed",
+            "type": "range",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "default": 5
+          },
+          {
+            "title": "Band",
+            "varName": "listeningBand",
+            "type": "select",
+            "options": [
+              {
+                "label": "Low",
+                "value": "low"
+              },
+              {
+                "label": "Mid",
+                "value": "mid"
+              },
+              {
+                "label": "High",
+                "value": "high"
+              }
+            ],
+            "default": "mid"
+          },
+          {
+            "title": "Source",
+            "varName": "gainNode",
+            "type": "select",
+            "options": [
+              {
+                "label": "Master",
+                "value": "master"
+              },
+              {
+                "label": "SoundBoard by Blitz (requires module)",
+                "value": "soundboard"
+              }
+            ],
+            "default": "master"
+          },
+          {
+            "title": "Exponent",
+            "description": "Simple easing. Increase if the light is too reactive.",
+            "varName": "exponent",
+            "type": "range",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "default": 1
+          }
+        ]
+      },
+      {
+        "translationName": "blurStatic",
+        "name": "Static Blur",
+        "animationFunction": "blitzStaticBlur",
+        "description": "A static, blurrable light",
+        "intensityDescription": "Not used",
+        "speedDescription": "Not used",
+        "customProperties": [
+          {
+            "title": "Blur Strength",
+            "varName": "blurStrength",
+            "type": "range",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 20
+          }
+        ]
+      },
+      {
+        "translationName": "torch",
+        "name": "Alternate Torch",
+        "animationFunction": "blitzTorch",
+        "description": "A deeper, alternative version of the torch, supporting Blur and flickering",
+        "shaders": {
+          "illumination": "CLTorchIlluminationShader"
+        },
+        "customProperties": [
+          {
+            "title": "Secondary Color",
+            "varName": "secondaryColor",
+            "type": "color",
+            "default": "#f0ba5c"
+          },
+          {
+            "title": "Ratio Damper",
+            "description": "Reduce certain values by this factor. Useful if you have a large dim radius, but small bright radius.",
+            "varName": "ratioDamper",
+            "type": "range",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 1
+          },
+          {
+            "title": "Blur Strength",
+            "varName": "blurStrength",
+            "type": "range",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 1
+          },
+          {
+            "title": "Flicker Movement",
+            "description": "Enable to cause the center circle to move around as it flickers",
+            "varName": "alterTranslation",
+            "type": "checkbox",
+            "default": true
+          },
+          {
+            "title": "Flicker Alpha",
+            "description": "Enable to flicker the opacity of the torch",
+            "varName": "alterAlpha",
+            "type": "checkbox",
+            "default": true
+          }
+        ]
+      },
+      {
+        "name": "Grid Force-Field Colorshift",
+        "animationFunction": "blitzForceFieldExtension",
+        "shaders": {
+          "coloration": "CLForceGridColorationShader"
+        },
+        "description": "A color-changing pulsating grid force-field, based on Grid Force-Field by SecretFire",
+        "intensityDescription": "Controls the pulsating power",
+        "speedDescription": "Controls how quickly the grid is pulsating",
+        "customPropertiesComment": "!AUTHORS! All possible property types are provided below for demonstration purposes.",
+        "customProperties": [
+          {
+            "title": "Secondary Color",
+            "description": "The light will morph between the initial color and this color",
+            "varName": "secondaryColor",
+            "type": "color",
+            "default": "#00ff00"
+          },
+          {
+            "title": "Use Color Speed",
+            "description": "Enable this to separate the speed of the color change from the speed of the rest of the animation",
+            "varName": "useColorSpeed",
+            "type": "checkbox",
+            "default": true
+          },
+          {
+            "title": "Color Speed",
+            "description": "How fast the color will change. Only if Use Color Speed is enabled.",
+            "varName": "colorSpeed",
+            "type": "range",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "default": 5
+          },
+          {
+            "title": "Color Speed Multiplier",
+            "description": "Multiply the Color Speed by this value. Only if Use Color Speed is enabled.",
+            "varName": "colorSpeedMult",
+            "type": "select",
+            "options": [
+              {
+                "label": "Quarter Speed",
+                "value": 0.25
+              },
+              {
+                "label": "Half Speed",
+                "value": 0.5
+              },
+              {
+                "label": "Full Speed",
+                "value": 1
+              },
+              {
+                "label": "Double Speed",
+                "value": 2
+              },
+              {
+                "label": "Triple Speed",
+                "value": 3
+              }
+            ],
+            "default": 1
+          }
+        ]
+      },
+      {
+        "translationName": "polyLight",
+        "name": "Poly Light",
+        "animationFunction": "blitzPolyLight",
+        "shaders": {
+          "illumination": "CLPolyIlluminationShader"
+        },
+        "description": "A simple light with a shaped illumination shader.",
+        "intensityDescription": "Control the intensity of the torch flicker (Requires Should Flicker). Control how much the shader morphs between two polygons.",
+        "speedDescription": "Control how fast the animation flickers (Requires Should Flicker). Control how quickly the shader morphs between polygons.",
+        "customProperties": [
+          {
+            "title": "Sides",
+            "description": "Number of polygon sides to start with",
+            "varName": "shapeSides",
+            "type": "range",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "default": 4
+          },
+          {
+            "title": "Animate Sides To",
+            "description": "Number of polygon sides to animate to. Set to the same value as Sides to disable this animation.",
+            "varName": "shapeSidesTo",
+            "type": "range",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "default": 4
+          },
+          {
+            "title": "Inner Blur",
+            "varName": "innerBlur",
+            "type": "range",
+            "min": 0.01,
+            "max": 0.5,
+            "step": 0.01,
+            "default": 0.1
+          },
+          {
+            "title": "Outer Blur",
+            "varName": "outerBlur",
+            "type": "range",
+            "min": 0.01,
+            "max": 0.5,
+            "step": 0.01,
+            "default": 0.1
+          },
+          {
+            "title": "Scale",
+            "description": "Change the size of the light. Useful if the polygon is clipped by the light radius.",
+            "varName": "scale",
+            "type": "range",
+            "min": 0.1,
+            "max": 2.0,
+            "step": 0.1,
+            "default": 1.0
+          },
+          {
+            "title": "Should Flicker Scale",
+            "description": "Torch-like flicker the size of the light.",
+            "varName": "shouldFlicker",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Should Flicker Alpha",
+            "description": "Torch-like flicker the lights opacity",
+            "varName": "shouldFlickerAlpha",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Should Flicker Wiggle",
+            "description": "Torch-like flicker, wiggling the lights edges",
+            "varName": "shouldFlickerTranslate",
+            "type": "checkbox",
+            "default": false
+          }
+        ]
+      },
+      {
+        "translationName": "customFire",
+        "name": "Custom Fire",
+        "animationFunction": "customFire",
+        "description": "Custom Shader Fire",
+        "intensityDescription": "Controls flame intensity",
+        "speedDescription": "Controls fire speed",
+        "shaders": {
+          "illumination": "CLFireIlluminationShader",
+          "coloration": "CLFireColorationShader"
+        },
+        "customProperties": [
+          {
+            "title": "Cast Light",
+            "description": "Enable to cast circular light fields.",
+            "varName": "castLight",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Blur Strength",
+            "varName": "smoothness",
+            "description": "Strength of blur on the light circles only",
+            "type": "range",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 1
+          },
+          {
+            "title": "Flame Size",
+            "description": "Use this to detemine how much of the light should be taken up by the flame.",
+            "varName": "flameRatio",
+            "type": "range",
+            "min": 0.01,
+            "max": 1.0,
+            "step": 0.01,
+            "default": 0.5
+          },
+          {
+            "title": "Cast-light Speed",
+            "description": "Controls the speed of the circle light animation only.",
+            "varName": "circleSpeed",
+            "type": "range",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "default": 5
+          },
+          {
+            "title": "Cast-light Intensity",
+            "description": "Controls the intensity of the circle light animation only.",
+            "varName": "circleIntensity",
+            "type": "range",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "default": 5
+          },
+          {
+            "title": "Should Flicker Scale",
+            "description": "Torch-like flicker the size of the light circles.",
+            "varName": "shouldFlicker",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Should Flicker Alpha",
+            "description": "Torch-like flicker the light circle opacity",
+            "varName": "shouldFlickerAlpha",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Should Flicker Translate",
+            "description": "Torch-like flicker the bright circles position",
+            "varName": "shouldFlickerTranslate",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Animated Enable",
+            "description": "Experimental. Short animation when the light is enabled.",
+            "varName": "shouldAnimateOn",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Animated Enable Speed",
+            "description": "Controls how quickly the light switches on",
+            "varName": "animateOnSpeed",
+            "type": "range",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "default": 5
+          },
+          {
+            "title": "Audio Reactivity",
+            "description": "Enable to allow the light to respond to audio",
+            "varName": "audioReactive",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Band",
+            "varName": "listeningBand",
+            "type": "select",
+            "options": [
+              {
+                "label": "Low",
+                "value": "low"
+              },
+              {
+                "label": "Mid",
+                "value": "mid"
+              },
+              {
+                "label": "High",
+                "value": "high"
+              }
+            ],
+            "default": "mid"
+          },
+          {
+            "title": "Source",
+            "varName": "gainNode",
+            "type": "select",
+            "options": [
+              {
+                "label": "Master",
+                "value": "master"
+              },
+              {
+                "label": "SoundBoard by Blitz (requires module)",
+                "value": "soundboard"
+              }
+            ],
+            "default": "master"
+          },
+          {
+            "title": "Exponent",
+            "description": "Simple easing. Increase if the light is too reactive.",
+            "varName": "exponent",
+            "type": "range",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "default": 1
+          }
+        ]
+      }
+    ]
+  },
+  "SecretFire": {
+    "discord": "SecretFire#4843",
+    "links": {
+      "github": "https://github.com/Feu-Secret",
+      "twitter": "",
+      "youtube": ""
     },
-    "Blitz-Commissioned": {
-        "discord": "Blitz#6797",
-        "links": {
-            "github": "https://github.com/BlitzKraig",
-            "twitter": "",
-            "youtube": ""
+    "lights": [
+      {
+        "translationName": "gridForceField",
+        "name": "Grid Force-Field",
+        "animationFunction": "secretFireAnimateTimeForceColor",
+        "shaders": {
+          "coloration": "CLForceGridColorationShader"
         },
-        "lights": [
-            {
-                "translationName": "forgottenAdventuresCustom",
-                "name": "Forgotten Adventures Customizable",
-                "animationFunction": "blitzForgottenAdventuresCustom",
-                "shaders": {
-                    "illumination": "CLCustomForgottenAdventuresShader"
-                },
-                "description": "A brightness-configurable light that won't dim when scene darkness is increased",
-                "intensityDescription": "Control the intensity of the torch flicker (Requires Should Flicker)",
-                "speedDescription": "Control how fast the animation flickers (Requires Should Flicker)",
-                "customProperties": [
-                    {
-                        "title": "Blur Strength",
-                        "varName": "blurStrength",
-                        "type": "range",
-                        "min": 1,
-                        "max": 50,
-                        "step": 1,
-                        "default": 1
-                    },
-                    {
-                        "title": "Bright Brightness",
-                        "description": "How bright the Bright Radius should be, from 0 to 1.7 (Full, higher than standard)",
-                        "varName": "brightBrightness",
-                        "type": "range",
-                        "min" : 0,
-                        "max": 1.7,
-                        "step": 0.1,
-                        "default": 1.7
-                    },
-                    {
-                        "title": "Dim Brightness",
-                        "varName": "dimBrightness",
-                        "description": "How bright the Dim Radius should be, from 0 to 2.7 (Full, higher than standard)",
-                        "type": "range",
-                        "min" : 0,
-                        "max": 2.7,
-                        "step": 0.1,
-                        "default": 1
-                    },
-                    {
-                        "title": "Should Flicker",
-                        "description": "Enable torch-like flickering",
-                        "varName": "shouldFlicker",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Should Flicker: Alpha",
-                        "description": "Enable to flicker the opacity of the light when using Should Flicker",
-                        "varName": "shouldFlickerAlpha",
-                        "type": "checkbox",
-                        "default": false
-                    },
-                    {
-                        "title": "Should Flicker: Translate",
-                        "description": "Enable to cause the center circle to move as it flickers when using Should Flicker",
-                        "varName": "shouldFlickerTranslate",
-                        "type": "checkbox",
-                        "default": false
-                    }
-
-                ]
-            }
+        "description": "A pulsating grid force-field",
+        "intensityDescription": "Controls the pulsating power",
+        "speedDescription": "Controls how quickly the grid is pulsating"
+      },
+      {
+        "translationName": "smokePatch",
+        "name": "Smoke Patch",
+        "animationFunction": "secretFireAnimateTimeForceColor",
+        "shaders": {
+          "coloration": "CLSmokePatchColorationShader",
+          "illumination": "CLSmokePatchIlluminationShader"
+        },
+        "description": "A billow of smoke",
+        "intensityDescription": "Controls the intensity of the smoke",
+        "speedDescription": "Controls how quickly the smoke swirls"
+      },
+      {
+        "translationName": "starLight",
+        "name": "Star Light",
+        "animationFunction": "secretFireAnimateStarLight",
+        "shaders": {
+          "coloration": "CLStarLightColorationShader",
+          "illumination": "CLSmoothTransitionIlluminationShader"
+        },
+        "description": "A shining star light",
+        "intensityDescription": "Controls the intensity of the star light",
+        "speedDescription": "Controls how quickly the star shines",
+        "customPropertiesComment": "test",
+        "customProperties": [
+          {
+            "title": "Secondary Color",
+            "varName": "secondaryColor",
+            "type": "color",
+            "default": "#00ff00"
+          }
         ]
-    }
+      },
+      {
+        "translationName": "starLightMusic",
+        "name": "Star Light Disco",
+        "animationFunction": "secretFireAnimateStarLightMusic",
+        "shaders": {
+          "coloration": "CLStarLightColorationShader",
+          "illumination": "CLSmoothTransitionIlluminationShader"
+        },
+        "description": "An audio-reactive disco star light",
+        "intensityDescription": "Controls the intensity of the rays shifting according to music",
+        "speedDescription": "Controls how quickly the star shines",
+        "customPropertiesComment": "test",
+        "customProperties": [
+          {
+            "title": "Secondary Color",
+            "varName": "secondaryColor",
+            "type": "color",
+            "default": "#00ff00"
+          },
+          {
+            "title": "Band",
+            "varName": "listeningBand",
+            "type": "select",
+            "options": [
+              {
+                "label": "Low",
+                "value": "low"
+              },
+              {
+                "label": "Mid",
+                "value": "mid"
+              },
+              {
+                "label": "High",
+                "value": "high"
+              }
+            ],
+            "default": "mid"
+          },
+          {
+            "title": "Source",
+            "varName": "gainNode",
+            "type": "select",
+            "options": [
+              {
+                "label": "Master",
+                "value": "master"
+              },
+              {
+                "label": "SoundBoard by Blitz (requires module)",
+                "value": "soundboard"
+              }
+            ],
+            "default": "master"
+          },
+          {
+            "title": "Exponent",
+            "description": "Simple easing. Increase if the light is too reactive.",
+            "varName": "exponent",
+            "type": "range",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "default": 1
+          }
+        ]
+      }
+    ]
+  },
+  "Blitz-Commissioned": {
+    "discord": "Blitz#6797",
+    "links": {
+      "github": "https://github.com/BlitzKraig",
+      "twitter": "",
+      "youtube": ""
+    },
+    "lights": [
+      {
+        "translationName": "forgottenAdventuresCustom",
+        "name": "Forgotten Adventures Customizable",
+        "animationFunction": "blitzForgottenAdventuresCustom",
+        "shaders": {
+          "illumination": "CLCustomForgottenAdventuresShader"
+        },
+        "description": "A brightness-configurable light that won't dim when scene darkness is increased",
+        "intensityDescription": "Control the intensity of the torch flicker (Requires Should Flicker)",
+        "speedDescription": "Control how fast the animation flickers (Requires Should Flicker)",
+        "customProperties": [
+          {
+            "title": "Blur Strength",
+            "varName": "blurStrength",
+            "type": "range",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "default": 1
+          },
+          {
+            "title": "Bright Brightness",
+            "description": "How bright the Bright Radius should be, from 0 to 1.7 (Full, higher than standard)",
+            "varName": "brightBrightness",
+            "type": "range",
+            "min": 0,
+            "max": 1.7,
+            "step": 0.1,
+            "default": 1.7
+          },
+          {
+            "title": "Dim Brightness",
+            "varName": "dimBrightness",
+            "description": "How bright the Dim Radius should be, from 0 to 2.7 (Full, higher than standard)",
+            "type": "range",
+            "min": 0,
+            "max": 2.7,
+            "step": 0.1,
+            "default": 1
+          },
+          {
+            "title": "Should Flicker",
+            "description": "Enable torch-like flickering",
+            "varName": "shouldFlicker",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Should Flicker: Alpha",
+            "description": "Enable to flicker the opacity of the light when using Should Flicker",
+            "varName": "shouldFlickerAlpha",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "title": "Should Flicker: Translate",
+            "description": "Enable to cause the center circle to move as it flickers when using Should Flicker",
+            "varName": "shouldFlickerTranslate",
+            "type": "checkbox",
+            "default": false
+          }
+        ]
+      }
+    ]
+  }
 }

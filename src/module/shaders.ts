@@ -1,5 +1,5 @@
 export class CLShaderFunctions {
-    static rotate = `
+  static rotate = `
     vec2 rotateUV(in vec2 uv, in float rotation, in vec2 mid)
     {
         return vec2(
@@ -7,7 +7,7 @@ export class CLShaderFunctions {
             cos(rotation) * (uv.y - mid.y) - sin(rotation) * (uv.x - mid.x) + mid.y
         );
     }`;
-    static scale = `
+  static scale = `
     vec2 scaleUV(in vec2 uv, in float scale)
     {
         uv -= 0.5;
@@ -15,7 +15,7 @@ export class CLShaderFunctions {
         uv += 0.5;
         return uv;
     }`;
-    static stretch = `
+  static stretch = `
     vec2 stretchUV(in vec2 uv, in vec2 stretch)
     {
         uv -= 0.5;
@@ -24,13 +24,13 @@ export class CLShaderFunctions {
         uv += 0.5;
         return uv;
     }`;
-    static translate = `
+  static translate = `
     vec2 translateUV(in vec2 uv, in vec2 translate)
     {
         uv += translate;
         return uv;
-    }`
-    static blur = `
+    }`;
+  static blur = `
     vec4 blur(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {
         vec4 color = vec4(0.0);
         vec2 off1 = vec2(1.3846153846) * direction;
@@ -42,9 +42,9 @@ export class CLShaderFunctions {
         color += texture2D(image, uv - (off2 / resolution)) * 0.0702702703;
         return color;
       }`;
-    static getPix = `vec4 pix = texture2D(sampler, stretchUV(rotateUV(scaleUV(translateUV(vUvs, vec2(-translateX, -translateY)), scale), radians(rotation), vec2(0.5)), vec2(stretchX, stretchY)));`;
-    static gobo = {
-        uniforms: `
+  static getPix = `vec4 pix = texture2D(sampler, stretchUV(rotateUV(scaleUV(translateUV(vUvs, vec2(-translateX, -translateY)), scale), radians(rotation), vec2(0.5)), vec2(stretchX, stretchY)));`;
+  static gobo = {
+    uniforms: `
         uniform sampler2D sampler;
         uniform bool useSampler;
         uniform bool invert;
@@ -57,13 +57,13 @@ export class CLShaderFunctions {
         uniform float translateY;
         uniform float smoothness;
         `,
-        functions: `
+    functions: `
         ${CLShaderFunctions.rotate}
         ${CLShaderFunctions.scale}
         ${CLShaderFunctions.stretch}
         ${CLShaderFunctions.translate}
         `,
-        gsColAvg: `
+    gsColAvg: `
         ${CLShaderFunctions.getPix}
         float avg = (pix.r + pix.g + pix.b) / 3.0;
         if(invert) {
@@ -71,7 +71,7 @@ export class CLShaderFunctions {
         }
         gsCol = vec3(avg);
         `,
-        gsColSilhouette: `
+    gsColSilhouette: `
         ${CLShaderFunctions.getPix}
         float avg = (pix.r + pix.g + pix.b) / 3.0;
         if(avg > 0.0){
@@ -82,7 +82,7 @@ export class CLShaderFunctions {
         }
         gsCol = vec3(avg);
         `,
-        gsColReal: `
+    gsColReal: `
         ${CLShaderFunctions.getPix}
         if(invert){
             gsCol = vec3(1.0 - pix.r, 1.0 - pix.g, 1.0 - pix.b);
@@ -90,7 +90,7 @@ export class CLShaderFunctions {
             gsCol = vec3(pix.r, pix.g, pix.b);
         }
         `,
-        gsColBlur: `
+    gsColBlur: `
         vec4 pix = blur(sampler, stretchUV(rotateUV(scaleUV(vUvs, scale), radians(rotation), vec2(0.5)), vec2(stretchX, stretchY)), vec2(100.0,100.0), vec2(smoothness/500.0,-smoothness/500.0));
         //pix = blur(pix, vUvs, vec2(100.0,100.0, vec2(smoothness,-smoothness)))
         float avg = (pix.r + pix.g + pix.b) / 3.0;
@@ -98,8 +98,8 @@ export class CLShaderFunctions {
             avg = 1.0 - avg;
         }
         gsCol = vec3(avg);
-        `
-    }
+        `,
+  };
 }
 
 /**
@@ -107,8 +107,9 @@ export class CLShaderFunctions {
  * @implements {StandardIlluminationShader}
  * @author Blitz
  */
- class CLTorchIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
-    static fragmentShader = `
+class CLTorchIlluminationShader extends AdaptiveIlluminationShader {
+  // StandardIlluminationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float alpha;
     uniform float ratio;
@@ -126,20 +127,21 @@ export class CLShaderFunctions {
         vec3 color = mix(colorDim, colorBright, smoothstep(dist - (smoothness / 100.0), dist + (smoothness / 100.0), ratio));
         gl_FragColor = vec4(color * alpha, 1.0);
     }`;
-    static defaultUniforms = mergeObject(super.defaultUniforms, {
-        smoothness: 1,
-        translateX: 0,
-        translateY: 0
-    });
-  }
+  static defaultUniforms = mergeObject(super.defaultUniforms, {
+    smoothness: 1,
+    translateX: 0,
+    translateY: 0,
+  });
+}
 
 /**
  * Wave animation illumination shader
  * @implements {StandardIlluminationShader}
  * @author SecretFire
  */
-class CLCustomWaveIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
-    static fragmentShader = `
+class CLCustomWaveIlluminationShader extends AdaptiveIlluminationShader {
+  // StandardIlluminationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float time;
     uniform float intensity;
@@ -187,8 +189,9 @@ class CLCustomWaveIlluminationShader extends AdaptiveIlluminationShader { // Sta
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLCustomWaveColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
-    static fragmentShader = `
+class CLCustomWaveColorationShader extends AdaptiveColorationShader {
+  // StandardColorationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float time;
     uniform float intensity;
@@ -199,7 +202,7 @@ class CLCustomWaveColorationShader extends AdaptiveColorationShader { // Standar
     const float MAX_INTENSITY = 1.35;
     const float MIN_INTENSITY = 0.8;
 
-    ${AbstractBaseShader.FADE(4, 0.90)}
+    ${AdaptiveLightingShader.FADE(4, 0.9)}
 
     float wave(in float dist) {
         float sinWave = 0.5 * (sin(-time * 6.0 + dist * 10.0 * intensity) + 1.0);
@@ -218,8 +221,9 @@ class CLCustomWaveColorationShader extends AdaptiveColorationShader { // Standar
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLForceGridColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
-    static fragmentShader = `
+class CLForceGridColorationShader extends AdaptiveColorationShader {
+  // StandardColorationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float time;
     uniform float intensity;
@@ -302,8 +306,9 @@ class CLForceGridColorationShader extends AdaptiveColorationShader { // Standard
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLSmokePatchColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
-    static fragmentShader = `
+class CLSmokePatchColorationShader extends AdaptiveColorationShader {
+  // StandardColorationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float time;
     uniform float intensity;
@@ -311,9 +316,9 @@ class CLSmokePatchColorationShader extends AdaptiveColorationShader { // Standar
     uniform vec3 color;
     varying vec2 vUvs;
 
-    ${AbstractBaseShader.PRNG}
-    ${AbstractBaseShader.NOISE}
-    ${AbstractBaseShader.FBM(2)}
+    ${AdaptiveLightingShader.PRNG}
+    ${AdaptiveLightingShader.NOISE}
+    ${AdaptiveLightingShader.FBM(2)}
 
     float smokefading(in float dist) {
         float t = time * 0.4;
@@ -338,8 +343,9 @@ class CLSmokePatchColorationShader extends AdaptiveColorationShader { // Standar
  * @implements {StandardIlluminationShader}
  * @author SecretFire
  */
-class CLSmokePatchIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
-    static fragmentShader = `
+class CLSmokePatchIlluminationShader extends AdaptiveIlluminationShader {
+  // StandardIlluminationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float time;
     uniform float intensity;
@@ -349,9 +355,9 @@ class CLSmokePatchIlluminationShader extends AdaptiveIlluminationShader { // Sta
     uniform vec3 colorBright;
     varying vec2 vUvs;
 
-    ${AbstractBaseShader.PRNG}
-    ${AbstractBaseShader.NOISE}
-    ${AbstractBaseShader.FBM(2)}
+    ${AdaptiveLightingShader.PRNG}
+    ${AdaptiveLightingShader.NOISE}
+    ${AdaptiveLightingShader.FBM(2)}
 
     float smokefading(in float dist) {
         float t = time * 0.4;
@@ -381,8 +387,9 @@ class CLSmokePatchIlluminationShader extends AdaptiveIlluminationShader { // Sta
  * @implements {StandardColorationShader}
  * @author SecretFire
  */
-class CLStarLightColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
-    static fragmentShader = `
+class CLStarLightColorationShader extends AdaptiveColorationShader {
+  // StandardColorationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float time;
     uniform float intensity;
@@ -393,9 +400,9 @@ class CLStarLightColorationShader extends AdaptiveColorationShader { // Standard
     uniform vec3 scolor;
     varying vec2 vUvs;
 
-    ${AbstractBaseShader.PRNG}
-    ${AbstractBaseShader.NOISE}
-    ${AbstractBaseShader.FBM(2)}
+    ${AdaptiveLightingShader.PRNG}
+    ${AdaptiveLightingShader.NOISE}
+    ${AdaptiveLightingShader.FBM(2)}
 
     vec2 transform(in vec2 uv, in float dist) {
         float t = time * 0.40;
@@ -431,11 +438,11 @@ class CLStarLightColorationShader extends AdaptiveColorationShader { // Standard
     }
     `;
 
-    static defaultUniforms = mergeObject(super.defaultUniforms, {
-        musicwave: 1,
-        scolor: [1.0, 1.0, 0.0],
-        musicmode: false,
-    });
+  static defaultUniforms = mergeObject(super.defaultUniforms, {
+    musicwave: 1,
+    scolor: [1.0, 1.0, 0.0],
+    musicmode: false,
+  });
 }
 
 /**
@@ -443,8 +450,9 @@ class CLStarLightColorationShader extends AdaptiveColorationShader { // Standard
  * @implements {StandardIlluminationShader}
  * @author SecretFire
  */
-class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
-    static fragmentShader = `
+class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader {
+  // StandardIlluminationShader {
+  static fragmentShader = `
     precision mediump float;
     uniform float time;
     uniform float intensity;
@@ -466,15 +474,14 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
     }`;
 }
 
-
-
 /**
  * Shader with support to change the brightness of bright & dim, blurring - Commissioned by Stryxin
  * @extends {StandardIlluminationShader}
  * @author Blitz
  */
- class CLCustomForgottenAdventuresShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
-    static fragmentShader = `
+class CLCustomForgottenAdventuresShader extends AdaptiveIlluminationShader {
+  // StandardIlluminationShader {
+  static fragmentShader = `
   precision mediump float;
   uniform float alpha;
   uniform float ratio;
@@ -499,8 +506,8 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
     dimBrightness: 1.0,
     smoothness: 1,
     translateX: 0,
-    translateY: 0
-});
+    translateY: 0,
+  });
 }
 
 /**
@@ -508,8 +515,9 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
  * @extends {StandardIlluminationShader}
  * @author Blitz
  */
- class CLPolyIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
-    static fragmentShader = `
+class CLPolyIlluminationShader extends AdaptiveIlluminationShader {
+  // StandardIlluminationShader {
+  static fragmentShader = `
     precision mediump float;
 
     #define PI 3.14159265359
@@ -553,13 +561,13 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
       gl_FragColor = vec4(color * alpha, 1.0);
   }`;
   static defaultUniforms = mergeObject(super.defaultUniforms, {
-    shapeSides : 4.0,
+    shapeSides: 4.0,
     smoothness: 0.1,
     outerSmoothness: 0.1,
     translateX: 0,
     translateY: 0,
-    scale : 1.0
-});
+    scale: 1.0,
+  });
 }
 
 /**
@@ -567,8 +575,9 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
  * @extends {StandardIlluminationShader}
  * @author Blitz
  */
- class CLFireIlluminationShader extends AdaptiveIlluminationShader { // StandardIlluminationShader {
-    static fragmentShader = `precision mediump float;
+class CLFireIlluminationShader extends AdaptiveIlluminationShader {
+  // StandardIlluminationShader {
+  static fragmentShader = `precision mediump float;
 
     #define PI 3.14159265359
     #define TWO_PI 6.28318530718
@@ -639,8 +648,8 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
     translateY: 0.0,
     smoothness: 0.1,
     castLight: false,
-    ramp: 1.0
-});
+    ramp: 1.0,
+  });
 }
 
 /**
@@ -648,8 +657,9 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
  * @extends {StandardColorationShader}
  * @author Blitz
  */
- class CLFireColorationShader extends AdaptiveColorationShader { // StandardColorationShader {
-    static fragmentShader = `precision mediump float;
+class CLFireColorationShader extends AdaptiveColorationShader {
+  // StandardColorationShader {
+  static fragmentShader = `precision mediump float;
 
     #define PI 3.14159265359
     #define TWO_PI 6.28318530718
@@ -704,6 +714,6 @@ class CLSmoothTransitionIlluminationShader extends AdaptiveIlluminationShader { 
   static defaultUniforms = mergeObject(super.defaultUniforms, {
     musicWave: 1.0,
     ratio: 0.1,
-    ramp: 1.0
-});
+    ramp: 1.0,
+  });
 }

@@ -11,7 +11,7 @@
       "url": "https://github.com/p4535992",
       "discord": "",
       "twitter": "",
-      "patreon": "",
+      "patreon": "p4535992",
       "github": "p4535992",
       "ko-fi": "",
       "reddit": "",
@@ -51,12 +51,12 @@
       "name": "English",
       "path": "lang/en.json"
     },
-	  {
+    {
       "lang": "pt-BR",
       "name": "Português (Brasil)",
       "path": "lang/pt-BR.json"
     },
-	{
+    {
       "lang": "es",
       "name": "Español",
       "path": "lang/es.json"
@@ -66,16 +66,21 @@
   "esmodules": ["main.js"],
   "styles": [],
   "packs": [],
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9",
-  "manifestPlusVersion": "1.2.0",
   "url": "https://github.com/p4535992/fvtt-CommunityLighting",
   "manifest": "https://github.com/p4535992/fvtt-CommunityLighting/releases/latest/download/module.json",
   "download": "https://github.com/p4535992/fvtt-CommunityLighting/releases/latest/download/module.zip",
   "readme": "https://github.com/p4535992/fvtt-CommunityLighting/blob/v0.6.12/README.md",
   "changelog": "https://github.com/p4535992/fvtt-CommunityLighting/blob/v0.6.12/changelog.md",
   "bugs": "https://github.com/p4535992/fvtt-CommunityLighting/issues",
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "9",
+  "compatibility": {
+    "minimum": 9,
+    "verified": 9,
+    "maximum": 9
+  },
   "allowBugReporter": true,
+  "manifestPlusVersion": "1.2.0",
   "dependencies": [
     {
       "name": "lib-wrapper"
@@ -84,9 +89,20 @@
       "name": "socketlib"
     }
   ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json"
+      },
+      {
+        "id": "socketlib",
+        "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/develop/module.json"
+      }
+    ]
+  },
   "flags": {
     "manifestPlusVersion": "1.2.0",
-    "allowBugReporter": true,
-    "conflicts": []
+    "allowBugReporter": true
   }
 }
